@@ -1,0 +1,68 @@
+bash-3.2$ pwd efvfvfv
+/Users/narevar/Downloads
+
+bash-3.2$ pwd 1234r4jkfrmvkrmvkjrvkev
+/Users/narevar/Downloads
+
+  bash-3.2$ |
+# bash: syntax error near unexpected token `|'
+
+  bash-3.2$ | echo 1
+# bash: syntax error near unexpected token `|'
+
+bash-3.2$ echo 123 |
+>                   - ошибка, запрос команды
+
+bash-3.2$ ghj
+bash: ghj: command not found
+
+bash-3.2$ bgh uhn uhi
+bash: bgh: command not found
+
+bash-3.2$ echo 123;
+123
+
+bash-3.2$ env erfjerjkf
+env: erfjerjkf: No such file or directory
+
+bash-3.2$ $PATH         -вывело и содержимое и ошибку!!!
+bash: /Users/narevar/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/narevar/Library/Python/3.8/bin: No such file or directory
+
+bash-3.2$ $DJCDV      - без команды эхо вообще ничего
+bash-3.2$ echo $DJCDV   - с командой эхо вывело пустую строку
+
+bash-3.2$ env $DJCDV        - с несуществующей переменной вывело весь env
+TERM_PROGRAM=Apple_Terminal
+HOMEBREW_TEMP=/tmp/narevar/Homebrew/Temp
+...
+
+bash-3.2$ echo \\
+\
+
+bash-3.2$ echo \n
+n
+
+  bash-3.2$ echo \"
+# "
+
+bash-3.2$ echo \  -слешпробел
+                    -вывод пробел
+
+  bash-3.2$ echo \' 
+# '
+
+bash-3.2$ echo '\'
+\
+
+# bash-3.2$ echo "\"
+# >               - ошибка, запрос знака "
+
+bash-3.2$ echos 1 ; echo 2
+bash: echos: command not found  # тут первая команда с ошибкой, а вторая выполнена!
+2                               # наоборот аналогичное поведение!
+
+  bash-3.2$ echo <<
+# bash: syntax error near unexpected token `newline'
+
+bash-3.2$ echo 1;|echo 2
+bash: syntax error near unexpected token `|'
