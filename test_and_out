@@ -48,11 +48,11 @@ n
 bash-3.2$ echo \  -слешпробел
                     -вывод пробел
 
-  bash-3.2$ echo \' 
+  bash-3.2$ echo \'
 # '
 
 bash-3.2$ echo '\'
-\
+ \
 
 # bash-3.2$ echo "\"
 # >               - ошибка, запрос знака "
@@ -66,3 +66,19 @@ bash: echos: command not found  # тут первая команда с ошиб
 
 bash-3.2$ echo 1;|echo 2
 bash: syntax error near unexpected token `|'
+
+bash-3.2$ exit|echo 1
+1
+
+bash-3.2$ echo 1 | exit
+bash-3.2$             ничего не вывело и не вышел!
+
+bash-3.2$ exit efjknvjk ekv erkv
+exit
+bash: exit: efjknvjk: numeric argument required
+
+bash-3.2$ exit
+exit
+
+bash-3.2$ exit ; echo 1
+exit

@@ -1,6 +1,6 @@
-all: 
-	gcc -g -lreadline *.c -o minishell
+all:
+	gcc -g *.c -o minishell -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
-clean: 
+clean:
 	rm -f minishell
 

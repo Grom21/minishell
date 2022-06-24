@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <readline/readline.h>
+#include <readline/history.h>
+#include <signal.h>
+#include <sys/ioctl.h>
+#include <termios.h>
+
 
 #define SYNTAX_ERROR 1
 #define COMMAND_NOT_FOUND 2
@@ -33,11 +38,13 @@ typedef struct s_lexer
 
 typedef struct s_shell
 {
-	t_list	*envp_list;
-	char	**envp;
-	char	*input;
-	char	**comand;
-	t_lexer	*lexer;
+	t_list			*envp_list;
+	char			**envp;
+	char			*input;
+	char			**comand;
+	t_lexer			*lexer;
+	struct termios	new_settings;
+	struct termios	default_settings;
 }t_shell;
 /* главная структура - хранит в себе все необходимые данные */
 
@@ -45,8 +52,17 @@ typedef struct s_shell
 /* INIT BLOCK */
 
 
+void	ft_new_term_settings(t_shell *mini);
+/* функция сохраняет в главную структуру t_shell mini базовые настройки
+терминала (default_settings) и создает новые настройки (new_settings)
+в которых блокируется вывод на экран символов, возникающих
+при нажатии ctrl+c и подобных сочетаний */
+
+void	ft_default_term(t_shell *mini);
+/* функция возвращает терминал к изначальным настройкам */
+
 void	ft_init(t_shell	*mini, char **env);
-/* главная функция блока init: вызывает остальные функци и записывает 
+/* главная функция блока init: вызывает остальные функци и записывает
 начальные значения в структуру t_shell mini */
 
 void	ft_init_envp_list(t_list **envp_list, char **env);
@@ -73,13 +89,13 @@ void	ft_free_memory_matrix(char **matrix);
 
 void	ft_lexer(t_lexer **lexer, char	*input);
 /*функция разбивает полученную строку на отдельные блоки
-и сохраняет их в односвязанном списке для дальнейшего парсинга 
+и сохраняет их в односвязанном списке для дальнейшего парсинга
 в случае если строка пустая или содержит только пробелы возврашает
 пустую строку в lexer->chank */
 
 
 void	ft_free_memory_lexer_list(t_lexer **lexer);
-/*функция для очиски памяти от односвязанного списка 
+/*функция для очиски памяти от односвязанного списка
 создаваемого ft_lexer(t_lexer **lexer, char	*input);
 после очиски памяти значение *lexer = NULL */
 
@@ -109,7 +125,7 @@ void	ft_lexer_d_quotes(t_lexer **lexer, char *input, int *start, int *stop);
 /*функция сохраняет в лист все что между " , а если нет закрывающей, то
 до конца строки
 в данной функции отдельно обработан случай "\"\0 - будет сохранено в лист "\ ,
-что легко отловить через проверку открыл кавычки - закрыл кавычки 
+что легко отловить через проверку открыл кавычки - закрыл кавычки
 следует учитывать что двойные кавычки не экранируют $ */
 
 void	ft_lexer_run_space(t_lexer **lexer, char *input, int *start, int *stop);
@@ -122,7 +138,7 @@ void	ft_lexer_redirect(t_lexer **lexer, char *input, int *start, int *stop);
 в случае если ковычек больше 2 сохраняет попарно в новый лист*/
 
 int	ft_parser(t_shell *mini);
-/*главная функция парсера - запускается после лексера и вызывает остальные 
+/*главная функция парсера - запускается после лексера и вызывает остальные
 функции проверки */
 
 int	ft_exam_backslash(t_shell *mini);
@@ -142,12 +158,22 @@ int	ft_exam_double_redirect(t_shell *mini);
 /*функция проверяет нет ли идущих друг за другом редиректа, включая разделенных
 пробелом. если да, то выводит сообщение об ошибке */
 
-// int	ft_exam_double_pipe(t_shell *mini);
-/*функция проверяет нет ли идущих друг за другом пайпа, включая разделенных
-пробелом. если да, то выводит сообщение об ошибке */
-
 void	ft_print_parser_error(t_lexer **lexer, int exeption);
 /*функция вывода сообщений об ошибках во 2 поток */
+
+
+/* OTHER */
+
+void	ft_signal(int sig);
+/*функция обработки нажатия ctrl+c: происходи очищение памяти буффера
+readline, перевод каретки на новую строку и вывод на экран нового
+promt сообщения */
+
+void	ft_exit_signal(t_shell *mini);
+/*функция обработки нажатие ctrl+d: в этом случае readline возвращает
+NULL и происходит очиска всей занятой памяти, выводиться сообщение о
+выходе, настройки терминала возвращаются в исходное состояние и
+программа завершается с кодом 0 */
 
 /* libft */
 size_t	ft_strlen(const char *s);
@@ -158,20 +184,5 @@ size_t	ft_strlen_key(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_atoi(const char *str);		//check this ft!!
 char	*ft_itoa(int n);
-
-/* get next line */
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 210
-# endif
-
-char	*get_next_line(int fd);
-char	*ft_read_file(char *line, char *reminder, int fd);
-char	*ft_find_line(char *reminder);
-void	ft_new_reminder(char *reminder);
-char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strchr(const char *s, int c);
-char	*ft_free_reminder(char *reminder);
-char	*ft_copy_in_line(char *line, char *reminder);
-char	*ft_copy_from_read(char *line, char *reminder);
 
 #endif
