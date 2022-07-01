@@ -80,25 +80,22 @@ void	ft_lexer(t_lexer **lexer, char	*input)
 	int	stop;
 
 	ft_lexer_run_space(lexer, input, &start, &stop);
-	while (input[start] != '\n' && input[start] != '\0')
+	while (input[start] != '\0')
 	{
-		if (input[stop] != ' ' && input[stop] != ';' && input[stop] != '|' \
-		&& input[stop] != '\\' && input[stop] != '\"' && input[stop] != '\'' \
-		&& input[stop] != '<' && input[stop] != '>' && input[stop] != '\0' \
-		&& input[stop] != '\n')
+		if (input[stop] != ' ' && input[stop] != '|' && input[stop] != '\"' \
+		&& input[stop] != '\'' && input[stop] != '<' && input[stop] != '>' \
+		&& input[stop] != '\0')
 			ft_lexer_word(lexer, input, &start, &stop);
-		if (input[stop] == ' ' && input[stop] != '\n' && input[stop] != '\0')
+		if (input[stop] == ' ' && input[stop] != '\0')
 			ft_lexer_spase(lexer, input, &start, &stop);
-		if ((input[stop] == ';' && input[stop] != '\n' && input[stop] != '\0') \
-		|| (input[stop] == '|' && input[stop] != '\n' && input[stop] != '\0') \
-		|| (input[stop] == '\\' && input[stop] != '\n' && input[stop] != '\0'))
+		if ((input[stop] == '|' && input[stop] != '\0'))
 			ft_lexer_delim(lexer, input, &start, &stop);
-		if (input[stop] == '\'' && input[stop] != '\n' && input[stop] != '\0')
+		if (input[stop] == '\'' && input[stop] != '\0')
 			ft_lexer_s_quotes(lexer, input, &start, &stop);
-		if (input[stop] == '\"' && input[stop] != '\n' && input[stop] != '\0')
+		if (input[stop] == '\"' && input[stop] != '\0')
 			ft_lexer_d_quotes(lexer, input, &start, &stop);
-		if ((input[stop] == '<' && input[stop] != '\n' && input[stop] != '\0') \
-		|| (input[stop] == '>' && input[stop] != '\n' && input[stop] != '\0'))
+		if ((input[stop] == '<' && input[stop] != '\0') \
+		|| (input[stop] == '>' && input[stop] != '\0'))
 			ft_lexer_redirect(lexer, input, &start, &stop);
 	}
 }

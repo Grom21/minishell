@@ -7,7 +7,7 @@ void	ft_lexer_run_space(t_lexer **lexer, char *input, int *start, int *stop)
 	while (input[(*start)] == ' ')
 		(*start)++;
 	*stop = *start;
-	if (input[(*start)] == '\n' || input[(*start)] == '\0')
+	if (input[(*start)] == '\0')
 		ft_create_lexer(lexer, input, *start, *stop);
 }
 

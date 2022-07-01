@@ -1,32 +1,17 @@
 #include "minishell.h"
 
-int	ft_exam_backslash(t_shell *mini)
-{
-	t_lexer *copy;
-
-	copy = mini->lexer;
-	while (copy->next)
-		copy = copy->next;
-	if(ft_strcmp(copy->chank, "\\") == 0)
-	{
-		ft_print_parser_error(&mini->lexer, SYNTAX_ERROR);
-		return (SYNTAX_ERROR);
-	}
-	return (0);
-}
-
-static t_lexer	*ft_exam_double_delimiter(t_lexer *copy, t_shell *mini)
+static t_lexer	*ft_exam_double_pipe(t_lexer *copy, t_shell *mini)
 {
 	t_lexer *nextlist;
 
 	while (copy->next)
 	{
-		if (copy->chank[0] == ';' || copy->chank[0] == '|')
+		if (copy->chank[0] == '|')
 		{
 			nextlist = copy->next;
 			if (nextlist->chank[0] == ' ')
 				nextlist = nextlist->next;
-			if (nextlist->chank[0] == '|' || nextlist->chank[0] == ';')
+			if (nextlist->chank[0] == '|')
 			{
 				ft_print_parser_error(&mini->lexer, SYNTAX_ERROR);
 				return (NULL);
@@ -48,7 +33,7 @@ int	ft_exam_pipe_first_last_double(t_shell *mini)
 		ft_print_parser_error(&mini->lexer, SYNTAX_PIPE_ERROR);
 		return (SYNTAX_PIPE_ERROR);
 	}
-	copy = ft_exam_double_delimiter(copy, mini);
+	copy = ft_exam_double_pipe(copy, mini);
 	if (!copy)
 		return (SYNTAX_ERROR);
 	if (ft_strcmp(copy->chank, "|") == 0)

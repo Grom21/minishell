@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 static void	ft_readline(t_shell *mini)
 {
 	mini->input = readline("minishell$ ");
@@ -13,21 +12,21 @@ static void	ft_readline(t_shell *mini)
 int	main (int argc, char **argv, char **env)
 {
 	t_shell	mini;
+	int		result_command;
 
 	ft_new_term_settings(&mini);
 	ft_init(&mini, env);
 	while (1)
 	{
 		signal(SIGINT, ft_signal);
-		signal(SIGQUIT, SIG_IGN);
+		// signal(SIGQUIT, SIG_IGN);
 		ft_readline(&mini);
 		ft_lexer(&mini.lexer, mini.input);
 
-		ft_parser(&mini);
-
-
-
-
+		if(ft_parser(&mini) == 0)
+		{
+			result_command = ft_execution(&mini);
+		}
 		// test lekser work
 		// t_lexer *copy;
 		// copy = mini.lexer;

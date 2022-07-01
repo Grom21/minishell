@@ -71,6 +71,8 @@ void	ft_init_envp_list(t_list **envp_list, char **env);
 использует маллок! - для очистки используй ft_free_memory_envp_list(t_list **envp_list);
 в случае ошибики чистит за собой память и выходит с кодом 1 */
 
+void	ft_save_envp_on_list(t_list **list, char *env);
+
 void	ft_free_memory_envp_list(t_list **envp_list);
 /*функция очистки памяти переменных окружения в листах (без exit!)*/
 
@@ -141,9 +143,6 @@ int	ft_parser(t_shell *mini);
 /*главная функция парсера - запускается после лексера и вызывает остальные
 функции проверки */
 
-int	ft_exam_backslash(t_shell *mini);
-/*функция проверяет есть ли любой знак после \ в конце строки
-если нет, то выводит сообщение об ошибке */
 
 int	ft_exam_pipe_first_last_double(t_shell *mini);
 /*функция проверяет есть ли хоть чтото перед | и нет ли | в конце строки,
@@ -161,6 +160,61 @@ int	ft_exam_double_redirect(t_shell *mini);
 void	ft_print_parser_error(t_lexer **lexer, int exeption);
 /*функция вывода сообщений об ошибках во 2 поток */
 
+/*создает новый лист в lexer в котором будут пересохранены аргументы
+к команде*/
+void	ft_parser_create(t_lexer **new);
+
+/*сохраняет один символ (с помошью strjoin) в переданный
+lexer->chank*/
+int	ft_save_char(t_lexer *new, char c);
+
+/*функция которая подставляет вместо ключа переменной окружения
+его значение*/
+int	ft_take_envp(t_lexer *new, t_lexer *old, int i, t_list *envp);
+
+/*функция проверяет что сохранено в чанке (" или ')
+ и запускает соответствующую функцию для оработки*/
+int	ft_parser_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list);
+
+/* EXECUTION */
+
+/*основная функция исполнения команд*/
+int	ft_execution(t_shell *mini);
+
+/*кастомное эхо, работает с флагом -n*/
+int	ft_echo(t_lexer *lexer, t_list *envp_list);
+
+/*выводит путь независимо от переданных аргументов*/
+int	ft_pwd(void);
+
+/*выводит переменные окружения*/
+int	ft_env(t_list *envp_list);
+
+/*добавляет новые переменные окружения в env
+возможно добавление нескольких переменных разделенный пробелом*/
+int	ft_export(t_lexer *lexer, t_list *envp_list);
+
+/*проверяет переданы ли аргументы в функцию экспорт
+если аргументов нет, выводит полный список env*/
+int	ft_exam_void(t_lexer *lexer, t_list *envp_list);
+
+/*функция проверяет допустимо ли значение ключа
+новой переменной окружения. которую хотят добавить*/
+int	ft_exam_export_key(char *str, char *key);
+
+/*выводит сообщение об ошибках при работе экспорта*/
+int	ft_print_export_error(char *str);
+
+/*функция удаляет переменные окружения из списка env
+может быть передано несколько переменных через пробел*/
+int	ft_unset(t_lexer *lexer, t_list *envp_list);
+
+/*печать сообщений об ошибках функции unset*/
+int	ft_print_unset_error(char *str);
+
+/*функция обрабатывает если передана команда exit
+в качестве аргумента принимает число - с каким кодом происход выход*/
+void	ft_exit(t_shell *mini);
 
 /* OTHER */
 
@@ -182,7 +236,15 @@ void	ft_free_memory_split(char **matrix, int x);
 size_t	ft_strlen_value(const char *s);
 size_t	ft_strlen_key(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
+int		ft_strcmp_echo(const char *s1, const char *s2);
+char	*ft_strchr(const char *s, int c);
 int		ft_atoi(const char *str);		//check this ft!!
 char	*ft_itoa(int n);
+char	*ft_strjoin(char const *s1, char const *s2);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putchar_fd(char c, int fd);
+int	ft_isalpha(int c);
+int	ft_isdigit(int c);
 
 #endif

@@ -82,3 +82,17 @@ exit
 
 bash-3.2$ exit ; echo 1
 exit
+
+bash-3.2$ ec"ho" 1
+1
+
+bash-3.2$ $'PWD'
+/Users/narevar
+
+bash-3.2$ export 1a=a
+bash: export: `1a=a': not a valid identifier
+
+bash-3.2$ unset a= b c 1d
+bash: unset: `a=': not a valid identifier
+bash: unset: `1d': not a valid identifier
+

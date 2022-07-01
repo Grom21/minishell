@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	ft_save_envp_on_list(t_list **list, char *env)
+void	ft_save_envp_on_list(t_list **list, char *env)
 {
 	int	x;
 	int	y;
