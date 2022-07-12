@@ -73,7 +73,7 @@ static int	ft_change_envp(t_list *copy_envp, char *str, char *key)
 	return (0);
 }
 
-static int	ft_export_run(char *str, t_list *envp_list)
+int	ft_export_run(char *str, t_list *envp_list)
 {
 	int		len;
 	t_list	*last_envp;

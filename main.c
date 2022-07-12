@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+int	g_last_exit = 0;
+
 static void	ft_readline(t_shell *mini)
 {
 	mini->input = readline("minishell$ ");
@@ -25,8 +27,9 @@ int	main (int argc, char **argv, char **env)
 
 		if(ft_parser(&mini) == 0)
 		{
-			result_command = ft_execution(&mini);
+			ft_execution(&mini);
 		}
+
 		// test lekser work
 		// t_lexer *copy;
 		// copy = mini.lexer;

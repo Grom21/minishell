@@ -10,5 +10,6 @@ int	ft_pwd(void)	//think about errors!
 	ft_putstr_fd(buf, 1);
 	ft_putchar_fd('\n', 1);
 	free(buf);
+	g_last_exit = 0;			//mb delit?
 	return (0);
 }

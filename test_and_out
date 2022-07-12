@@ -96,3 +96,76 @@ bash-3.2$ unset a= b c 1d
 bash: unset: `a=': not a valid identifier
 bash: unset: `1d': not a valid identifier
 
+bash-3.2$ unset OLDPWD
+bash-3.2$ cd -
+bash: cd: OLDPWD not set
+
+bash-3.2$ pwd
+/Users/narevar/Desktop
+bash-3.2$ unset HOME
+bash-3.2$ cd
+bash: cd: HOME not set
+bash-3.2$ pwd
+/Users/narevar/Desktop
+
+bash-3.2$ pwd
+/Users/narevar/Desktop
+bash-3.2$ cd ~/Downloads
+bash-3.2$ pwd
+/Users/narevar/Downloads
+
+bash-3.2$ pwd
+/Users/narevar/Downloads
+bash-3.2$ cd ~ /Desktop
+bash-3.2$ pwd
+/Users/narevar
+
+bash-3.2$ pwd
+/Users/narevar/Desktop
+bash-3.2$ cd ~-
+bash-3.2$ pwd
+/Users/narevar/Desktop/t4
+bash-3.2$ cd ~-/t2
+bash-3.2$ pwd
+/Users/narevar/Desktop/t2
+bash-3.2$
+
+bash-3.2$ unset HOME
+bash-3.2$ cd
+bash: cd: HOME not set
+bash-3.2$ echo $?
+1
+
+bash-3.2$ export HOME=123
+bash-3.2$ cd
+bash: cd: 123: No such file or directory
+bash-3.2$ echo $?
+1
+
+bash-3.2$ unset OLDPWD
+bash-3.2$ cd -
+bash: cd: OLDPWD not set
+bash-3.2$ echo $?
+1
+
+bash-3.2$ eCHo 2
+2
+
+command < file перенаправляет содержимое файла в команду
+command << delimiter система считывает из стандартного вывода пока не будет
+передан delimeter и затем, все сохраненное передает в команду
+command > file стирает или создает файл и записывает вывод команды в него
+command >> file открывает файл и дописывает в конец вывод команды
+если файла нет, то создает его
+
+bash-3.2$ unset PATH | cat
+bash-3.2$ unset PATH | echo 1
+1
+bash-3.2$ echo $PATH
+/Users/narevar/.brew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:
+/sbin:/Users/narevar/Library/Python/3.8/bin
+
+bash-3.2$ /Users/narevar/fvevewve
+bash: /Users/narevar/fvevewve: No such file or directory
+bash-3.2$ echo $?
+127

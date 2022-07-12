@@ -9,12 +9,18 @@
 #include <signal.h>
 #include <sys/ioctl.h>
 #include <termios.h>
+#include <sys/stat.h>
 
 
 #define SYNTAX_ERROR 1
 #define COMMAND_NOT_FOUND 2
 #define SYNTAX_PIPE_ERROR 3
+#define HOME_NOT_SET 4
+#define NO_SUCH_FILE_OR_DIR 5
+#define OLDPWD_NOT_SET 6
+#define FILE_NAME_TOO_LONG 7
 
+extern int	g_last_exit;
 
 typedef struct s_list
 {
@@ -45,120 +51,121 @@ typedef struct s_shell
 	t_lexer			*lexer;
 	struct termios	new_settings;
 	struct termios	default_settings;
+	int				fd1[2];
+	int				fd2[2];
 }t_shell;
 /* главная структура - хранит в себе все необходимые данные */
 
 
 /* INIT BLOCK */
 
-
-void	ft_new_term_settings(t_shell *mini);
 /* функция сохраняет в главную структуру t_shell mini базовые настройки
 терминала (default_settings) и создает новые настройки (new_settings)
 в которых блокируется вывод на экран символов, возникающих
 при нажатии ctrl+c и подобных сочетаний */
+void	ft_new_term_settings(t_shell *mini);
 
-void	ft_default_term(t_shell *mini);
 /* функция возвращает терминал к изначальным настройкам */
+void	ft_default_term(t_shell *mini);
 
-void	ft_init(t_shell	*mini, char **env);
 /* главная функция блока init: вызывает остальные функци и записывает
 начальные значения в структуру t_shell mini */
+void	ft_init(t_shell	*mini, char **env);
 
-void	ft_init_envp_list(t_list **envp_list, char **env);
 /*функция запускается при старте прграммы и сохраняет переменные окружения в листы
 для последующей работы с ними
 использует маллок! - для очистки используй ft_free_memory_envp_list(t_list **envp_list);
 в случае ошибики чистит за собой память и выходит с кодом 1 */
+void	ft_init_envp_list(t_list **envp_list, char **env);
 
+/*функция сохраняет в лист одну переменную окружения разбив ее на пару
+ключ - значение (разделитель = ) */
 void	ft_save_envp_on_list(t_list **list, char *env);
 
-void	ft_free_memory_envp_list(t_list **envp_list);
 /*функция очистки памяти переменных окружения в листах (без exit!)*/
+void	ft_free_memory_envp_list(t_list **envp_list);
 
-char	**ft_new_envp(t_list **envp_list);
 /*функция сохраняет переменные окружения в двухмерный массив
 в случае ошибки чистит за собой память и возвращает NULL
 использует маллок! - для очистки используй ft_free_memory_matrix(char **matrix)
 где x - размер "массива первого порядка"*/
+char	**ft_new_envp(t_list **envp_list);
 
-void	ft_free_memory_matrix(char **matrix);
 /*функция для очиски памяти от двухмерного массива*/
+void	ft_free_memory_matrix(char **matrix);
 
 
 /* PARSER */
 
 
-void	ft_lexer(t_lexer **lexer, char	*input);
 /*функция разбивает полученную строку на отдельные блоки
 и сохраняет их в односвязанном списке для дальнейшего парсинга
 в случае если строка пустая или содержит только пробелы возврашает
 пустую строку в lexer->chank */
+void	ft_lexer(t_lexer **lexer, char	*input);
 
-
-void	ft_free_memory_lexer_list(t_lexer **lexer);
 /*функция для очиски памяти от односвязанного списка
 создаваемого ft_lexer(t_lexer **lexer, char	*input);
 после очиски памяти значение *lexer = NULL */
+void	ft_free_memory_lexer_list(t_lexer **lexer);
 
-void	ft_create_lexer(t_lexer **lexer, char *input, int start, int stop);
 /*функция создает отдельный лист односвязаннго списка lexer
 была вынесена поскольку вызывающие ее функции не поместились в один файл
 (вызывается из файла lexer_utils.c) */
+void	ft_create_lexer(t_lexer **lexer, char *input, int start, int stop);
 
-void	ft_lexer_word(t_lexer **lexer, char *input, int *start, int *stop);
 /*функция сохраняет в листы все что не \ < > << >> " ' ; | или до этих
 символов */
+void	ft_lexer_word(t_lexer **lexer, char *input, int *start, int *stop);
 
-void	ft_lexer_spase(t_lexer **lexer, char *input, int *start, int *stop);
 /*функция в случае встречи пробелов пропускает их все и сохраняет один пробел
 в лист */
+void	ft_lexer_spase(t_lexer **lexer, char *input, int *start, int *stop);
 
-void	ft_lexer_delim(t_lexer **lexer, char *input, int *start, int *stop);
 /*если "\\" идет в конце строки то сохранен будет только "\\"!
 проверить в парсере!!!!! */
+void	ft_lexer_delim(t_lexer **lexer, char *input, int *start, int *stop);
 
-void	ft_lexer_s_quotes(t_lexer **lexer, char *input, int *start, int *stop);
 /*функция сохраняет в лист все что между ' , а если нет закрывающей, то
 до конца строки
 одинарные ковычки экранируют все: "$" и "\" */
+void	ft_lexer_s_quotes(t_lexer **lexer, char *input, int *start, int *stop);
 
-void	ft_lexer_d_quotes(t_lexer **lexer, char *input, int *start, int *stop);
 /*функция сохраняет в лист все что между " , а если нет закрывающей, то
 до конца строки
 в данной функции отдельно обработан случай "\"\0 - будет сохранено в лист "\ ,
 что легко отловить через проверку открыл кавычки - закрыл кавычки
 следует учитывать что двойные кавычки не экранируют $ */
+void	ft_lexer_d_quotes(t_lexer **lexer, char *input, int *start, int *stop);
 
-void	ft_lexer_run_space(t_lexer **lexer, char *input, int *start, int *stop);
 /*функция пропускает все пробелы в начале строки
 в случае если строка пустая или состоит только из пробелов
 создает лист с пустой строой*/
+void	ft_lexer_run_space(t_lexer **lexer, char *input, int *start, int *stop);
 
-void	ft_lexer_redirect(t_lexer **lexer, char *input, int *start, int *stop);
 /*функция сохраняет в листы алмазные кавычки
 в случае если ковычек больше 2 сохраняет попарно в новый лист*/
+void	ft_lexer_redirect(t_lexer **lexer, char *input, int *start, int *stop);
 
-int	ft_parser(t_shell *mini);
 /*главная функция парсера - запускается после лексера и вызывает остальные
 функции проверки */
+int	ft_parser(t_shell *mini);
 
-
-int	ft_exam_pipe_first_last_double(t_shell *mini);
 /*функция проверяет есть ли хоть чтото перед | и нет ли | в конце строки,
 а так же не стоят ли друг за другом ; и | и нет ли двойного написания ; и |
 если да, то выводит сообщение об ошибке */
+int	ft_exam_pipe_first_last_double(t_shell *mini);
 
-int	ft_exam_syntax_quotes(t_shell *mini);
 /*функция проверяет были ли закрыты кавычки, если нет то выводит сооббщение
 об ошибке */
+int	ft_exam_syntax_quotes(t_shell *mini);
 
-int	ft_exam_double_redirect(t_shell *mini);
 /*функция проверяет нет ли идущих друг за другом редиректа, включая разделенных
 пробелом. если да, то выводит сообщение об ошибке */
+int	ft_exam_double_redirect(t_shell *mini);
 
-void	ft_print_parser_error(t_lexer **lexer, int exeption);
 /*функция вывода сообщений об ошибках во 2 поток */
+void	ft_print_parser_error(t_lexer **lexer, int exeption);
 
 /*создает новый лист в lexer в котором будут пересохранены аргументы
 к команде*/
@@ -179,10 +186,27 @@ int	ft_parser_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list);
 /* EXECUTION */
 
 /*основная функция исполнения команд*/
-int	ft_execution(t_shell *mini);
+void	ft_execution(t_shell *mini);
 
 /*кастомное эхо, работает с флагом -n*/
 int	ft_echo(t_lexer *lexer, t_list *envp_list);
+
+/*меняет директорию, cd - возврат к старой директории
+cd ~ эквивалентно cd */
+int	ft_cd(t_lexer *lexer, t_shell *mini);
+
+/*выводит сообщение об ошибках при работе cd*/
+int	ft_cd_error(int exeption, char *str);
+
+/*функция поиска в envp_list нужного листа по key
+возвращает указатель на найденный лист или NULL если не найдено*/
+t_list *ft_found_in_envp(t_list *envp_list, char *key);
+
+/* функция обновляет значение OLDPWD в mini->envp_list */
+int	ft_update_envp_old_pwd(t_list *envp_list, char *old_pwd);
+
+/* функция обновляет значение PWD в mini->envp_list */
+int	ft_update_envp_pwd(t_list *envp_list);
 
 /*выводит путь независимо от переданных аргументов*/
 int	ft_pwd(void);
@@ -193,6 +217,10 @@ int	ft_env(t_list *envp_list);
 /*добавляет новые переменные окружения в env
 возможно добавление нескольких переменных разделенный пробелом*/
 int	ft_export(t_lexer *lexer, t_list *envp_list);
+
+/*функция проверяет есть ли строка в виде ключ=значение в
+envp_list и если есть меняет значение, иначе добавляет новое*/
+int	ft_export_run(char *str, t_list *envp_list);
 
 /*проверяет переданы ли аргументы в функцию экспорт
 если аргументов нет, выводит полный список env*/
@@ -212,22 +240,33 @@ int	ft_unset(t_lexer *lexer, t_list *envp_list);
 /*печать сообщений об ошибках функции unset*/
 int	ft_print_unset_error(char *str);
 
-/*функция обрабатывает если передана команда exit
+/*функция выхода если передана команда exit
 в качестве аргумента принимает число - с каким кодом происход выход*/
 void	ft_exit(t_shell *mini);
 
+/*функция запуска сторонних бинарников в отдельном процессе
+так же в ней реализованы пайпы*/
+void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count);
+
+/*функция поиска кастомных команд, реализованных в минишелле*/
+int	ft_found_in_castom(t_shell *mini, t_lexer *lexer);
+
+/*функция поиска и запуска бинарников в PATH*/
+void	ft_run_from_path(t_shell *mini, t_lexer *copy);
+
 /* OTHER */
 
-void	ft_signal(int sig);
 /*функция обработки нажатия ctrl+c: происходи очищение памяти буффера
 readline, перевод каретки на новую строку и вывод на экран нового
 promt сообщения */
+void	ft_signal(int sig);
 
-void	ft_exit_signal(t_shell *mini);
 /*функция обработки нажатие ctrl+d: в этом случае readline возвращает
 NULL и происходит очиска всей занятой памяти, выводиться сообщение о
 выходе, настройки терминала возвращаются в исходное состояние и
 программа завершается с кодом 0 */
+void	ft_exit_signal(t_shell *mini);
+
 
 /* libft */
 size_t	ft_strlen(const char *s);
@@ -243,6 +282,7 @@ char	*ft_itoa(int n);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void	ft_putstr_fd(char *s, int fd);
+// void	ft_putnbr_fd(int n, int fd);
 void	ft_putchar_fd(char c, int fd);
 int	ft_isalpha(int c);
 int	ft_isdigit(int c);

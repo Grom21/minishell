@@ -21,10 +21,24 @@ static int	ft_single_quotes(t_lexer *new_copy, t_lexer *old_copy, int i)
 
 static int	ft_exit_status(t_lexer *new, t_lexer *old, int i)	//need rewrite this!!!
 {
+	char	*exit_status;
+	int		x;
+
 	if (old->chank[i] == '$' && old->chank[i + 1] == '?')
 	{
-		if(ft_save_char(new, '?') != 0) // !!!!!!!!!!!
+		if ((exit_status = ft_itoa(g_last_exit)) == NULL)
 			return (-1);
+		x = 0;
+		while (exit_status[x])
+		{
+			if(ft_save_char(new, exit_status[x]) != 0)
+			{
+				free (exit_status);
+				return (-1);
+			}
+			x++;
+		}
+		i++;
 		i++;
 	}
 	return (i);
