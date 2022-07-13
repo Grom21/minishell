@@ -188,6 +188,8 @@ int	ft_parser_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list);
 /*основная функция исполнения команд*/
 void	ft_execution(t_shell *mini);
 
+int	ft_found_redirect_in_command(t_shell *mini, t_lexer *lexer);
+
 /*кастомное эхо, работает с флагом -n*/
 int	ft_echo(t_lexer *lexer, t_list *envp_list);
 
@@ -235,7 +237,7 @@ int	ft_print_export_error(char *str);
 
 /*функция удаляет переменные окружения из списка env
 может быть передано несколько переменных через пробел*/
-int	ft_unset(t_lexer *lexer, t_list *envp_list);
+int	ft_unset(t_lexer *lexer, t_list **envp_list);
 
 /*печать сообщений об ошибках функции unset*/
 int	ft_print_unset_error(char *str);

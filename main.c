@@ -60,14 +60,14 @@ int	main (int argc, char **argv, char **env)
 	// 	i++;
 	// }
 
-	ft_free_memory_envp_list(&mini.envp_list);
-	ft_free_memory_matrix(mini.envp);
-	ft_free_memory_matrix(mini.comand);
-	mini.comand = NULL;
-	mini.envp = NULL;
-	mini.envp_list = NULL;
-	mini.input = NULL;
-	mini.lexer = NULL;
+	// ft_free_memory_envp_list(&mini.envp_list);
+	// ft_free_memory_matrix(mini.envp);
+	// ft_free_memory_matrix(mini.comand);
+	// mini.comand = NULL;
+	// mini.envp = NULL;
+	// mini.envp_list = NULL;
+	// mini.input = NULL;
+	// mini.lexer = NULL;
 
 
 	return (0);

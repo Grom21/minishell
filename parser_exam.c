@@ -84,7 +84,8 @@ int	ft_exam_double_redirect(t_shell *mini)
 			nextlist = copy->next;
 			if (nextlist->chank[0] == ' ')
 				nextlist = nextlist->next;
-			if (nextlist->chank[0] == '<' || nextlist->chank[0] == '>')
+			if (nextlist->chank[0] == '<' || nextlist->chank[0] == '>' \
+			|| nextlist->chank[0] == '|')
 			{
 				ft_print_parser_error(&mini->lexer, SYNTAX_ERROR);
 				return (SYNTAX_ERROR);

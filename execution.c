@@ -72,8 +72,11 @@ void	ft_execution(t_shell *mini)
 	{
 		if (count > 0)
 			i = ft_open_fd(mini, i, count);
-		if (count == -1 && (g_last_exit = ft_found_in_castom(mini, copy)) != -1)
-			break ;
+		if (count == -1 && ft_found_redirect_in_command(mini, copy) == 0)
+		{
+			if ((g_last_exit = ft_found_in_castom(mini, copy)) != -1)
+				break ;
+		}
 		children = fork();
 		if (children < 0)
 			break ;	// need write error massage! and close fd!

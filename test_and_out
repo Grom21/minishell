@@ -169,3 +169,11 @@ bash-3.2$ /Users/narevar/fvevewve
 bash: /Users/narevar/fvevewve: No such file or directory
 bash-3.2$ echo $?
 127
+
+bash-3.2$ unset _
+bash-3.2$ env
+...
+_=/usr/bin/env
+
+bash-3.2$ pwd >| cat
+bash-3.2$

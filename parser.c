@@ -1,78 +1,82 @@
 #include "minishell.h"
 
-static int	ft_save_info(t_lexer **new, t_lexer **old_copy, t_list *envp_list)
+static int	save_delimeter(t_lexer **new, t_lexer **old, t_list *envp_list)
 {
 	t_lexer	*new_copy;
-	char	*buffer;
 
 	new_copy = *new;
 	while (new_copy->next)
 		new_copy = new_copy->next;
-	// if (ft_strcmp(new_copy->chank, "-n") == 0)	// del! -n in one chank!
-	// {
-	// 	ft_parser_create(new);		//protect malloc!
-	// 	new_copy = new_copy->next;
-	// }
-	while (*old_copy && (*old_copy)->chank[0] != '|')
-	{
-		ft_parser_save(new_copy, *old_copy, envp_list);
-		*old_copy = (*old_copy)->next;
-	}
-	if (*old_copy && (*old_copy)->chank[0] == '|')
-	{
-		ft_parser_create(new);		//protect malloc!
+	ft_parser_save(new_copy, *old, envp_list);		//return!
+	*old = (*old)->next;
+	if (*old && (*old)->chank[0] == ' ')
+		*old = (*old)->next;
+	return (0);
+}
+
+static int	save_arg(t_lexer **new, t_lexer **old, t_list *envp_list)
+{
+	t_lexer	*new_copy;
+
+	new_copy = *new;
+	while (new_copy->next)
 		new_copy = new_copy->next;
-		return (ft_parser_save(new_copy, *old_copy, envp_list));
+	while (*old && (*old)->chank[0] != '|' && (*old)->chank[0] != '<' \
+	&& (*old)->chank[0] != '>')
+	{
+		ft_parser_save(new_copy, *old, envp_list);		//return!
+		*old = (*old)->next;
 	}
 	return (0);
 }
 
-static int	save_command(t_lexer **new, t_lexer **old_copy, t_list *envp_list)
+static int	save_command(t_lexer **new, t_lexer **old, t_list *envp_list)
 {
 	t_lexer	*new_copy;
-	char	*buffer;
 
 	new_copy = *new;
 	while (new_copy->next)
 		new_copy = new_copy->next;
-	while (*old_copy && (*old_copy)->chank[0] != ' ' \
-	&& (*old_copy)->chank[0] != '|')
+	while (*old && (*old)->chank[0] != ' ' && (*old)->chank[0] != '|' \
+	&& (*old)->chank[0] != '<' && (*old)->chank[0] != '>')
 	{
-		ft_parser_save(new_copy, *old_copy, envp_list);		//return!
-		*old_copy = (*old_copy)->next;
+		ft_parser_save(new_copy, *old, envp_list);		//return!
+		*old = (*old)->next;
 	}
-	if (*old_copy && (*old_copy)->chank[0] == ' ')
-		*old_copy = (*old_copy)->next;
-	if (*old_copy && (*old_copy)->chank[0] != '|')
+	if (*old && (*old)->chank[0] == ' ')
+		*old = (*old)->next;
+	if (*old && (*old)->chank[0] != ' ' && (*old)->chank[0] != '|' \
+	&& (*old)->chank[0] != '<' && (*old)->chank[0] != '>')
 	{
 		ft_parser_create(new);		//protect malloc!
-		new_copy = new_copy->next;
-		ft_parser_save(new_copy, *old_copy, envp_list);		//return!
-		*old_copy = (*old_copy)->next;
-		// if (*old_copy && (*old_copy)->chank[0] == ' ' \  // del! -n in one chank!
-		// && ft_strcmp(new_copy->chank, "-n") == 0)
-		// 	*old_copy = (*old_copy)->next;
+		save_arg(new, old, envp_list);
 	}
 	return (0);
 }
 
 static int	ft_open_quotes(t_shell *mini)
 {
-	t_lexer	*old_copy;
+	t_lexer	*old;
 	t_lexer	*new;
 
 	new = NULL;
-	old_copy = mini->lexer;
-	while (old_copy)
+	old = mini->lexer;
+	while (old)
 	{
-		ft_parser_create(&new);		//protect malloc!
-		save_command(&new, &old_copy, mini->envp_list);
-		if (old_copy)
-			ft_save_info(&new, &old_copy, mini->envp_list);
-		if (old_copy && old_copy->chank[0] == '|')
-			old_copy = old_copy->next;
-		if (old_copy && old_copy->chank[0] == ' ')
-			old_copy = old_copy->next;
+		if (old && old->chank[0] != ' ' && old->chank[0] != '|' \
+		&& old->chank[0] != '<' && old->chank[0] != '>')
+		{
+			ft_parser_create(&new);		//protect malloc!
+			save_command(&new, &old, mini->envp_list);
+		}
+		if (old && (old->chank[0] == '|' || old->chank[0] == '<' \
+		|| old->chank[0] == '>'))
+		{
+			ft_parser_create(&new);		//protect malloc!
+			save_delimeter(&new, &old, mini->envp_list);
+		}
+		if (old && old->chank[0] == ' ')
+			old = old->next;
 	}
 	ft_free_memory_lexer_list(&mini->lexer);
 	mini->lexer = new;

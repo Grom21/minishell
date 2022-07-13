@@ -27,7 +27,7 @@ static char	**ft_start_another_program(t_shell *mini, t_lexer *copy)
 	return (matrix);
 }
 
-static t_list *ft_found_path(t_list *envp_list)
+static t_list *ft_found_path(t_list *envp_list, t_lexer *copy)
 {
 	t_list		*envp_copy;
 
@@ -39,7 +39,10 @@ static t_list *ft_found_path(t_list *envp_list)
 		envp_copy = envp_copy->next;
 	}
 	if (!envp_copy)
+	{
+		ft_print_parser_error(&copy, NO_SUCH_FILE_OR_DIR);
 		exit (127);
+	}
 	return (envp_copy);
 }
 
@@ -96,7 +99,7 @@ void	ft_run_from_path(t_shell *mini, t_lexer *copy)
 	char	**argv;
 
 	argv = ft_start_another_program(mini, copy);
-	envp_copy = ft_found_path(mini->envp_list);
+	envp_copy = ft_found_path(mini->envp_list, copy);
 	path_matrix = ft_create_path_matrix(copy, envp_copy);
 	start_in_path(path_matrix, copy, argv, mini->envp);
 }

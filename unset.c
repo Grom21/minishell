@@ -24,11 +24,21 @@ static int	ft_exam_unset_key(char *str)
 	return (0);
 }
 
-static int	ft_delit_envp(t_list *copy_envp, t_list *envp_list)
+static int	ft_delit_envp(t_list *copy_envp, t_list **envp_list)
 {
 	t_list	*previous;
 
-	previous = envp_list;
+	previous = *envp_list;
+	if (previous == copy_envp)
+	{
+		*envp_list = previous->next;
+		if (previous->key)
+			free (previous->key);
+		if (previous->value)
+			free (previous->value);
+		free(previous);
+		return (0);
+	}
 	while (previous->next != copy_envp)
 		previous = previous->next;
 	previous->next = copy_envp->next;
@@ -40,11 +50,11 @@ static int	ft_delit_envp(t_list *copy_envp, t_list *envp_list)
 	return (0);
 }
 
-static int	ft_unset_run(char *str, t_list *envp_list)
+static int	ft_unset_run(char *str, t_list **envp_list)
 {
 	t_list	*copy_envp;
 
-	copy_envp = envp_list;
+	copy_envp = *envp_list;
 	if (ft_strchr(str, '=') != NULL)
 		return (ft_print_unset_error(str));
 	if (ft_exam_unset_key(str) != 0)
@@ -58,7 +68,7 @@ static int	ft_unset_run(char *str, t_list *envp_list)
 	return (0);
 }
 
-int	ft_unset(t_lexer *lexer, t_list *envp_list)
+int	ft_unset(t_lexer *lexer, t_list **envp_list)
 {
 	int		i;
 	int		result;
