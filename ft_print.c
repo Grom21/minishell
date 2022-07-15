@@ -23,6 +23,8 @@ void	ft_print_parser_error(t_lexer **lexer, int exeption)
 		write(2, copy->chank, ft_strlen(copy->chank));
 		write(2, ": No such file or directory\n", 29);
 	}
+	else if (exeption == SYNTAX_REDIR_ERROR)
+		write(2, "minishell: syntax error near unexpected token `newline'\n", 56);
 }
 
 int	ft_print_export_error(char *str)

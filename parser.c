@@ -93,6 +93,8 @@ int	ft_parser(t_shell *mini)
 		return (result);
 	if ((result = ft_exam_double_redirect(mini)) != 0)
 		return (result);
+	if ((result = ft_exam_last_redirect(mini)) != 0)
+		return (result);
 	if ((result = ft_open_quotes(mini)) !=0)
 		return (result);
 	if (mini->lexer->chank[0] == '\0')

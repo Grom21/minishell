@@ -30,6 +30,8 @@ static int	ft_found_command_with_pipe(t_lexer *lexer)
 
 static t_lexer	*ft_close_fd_and_wait(t_shell *mini, t_lexer *copy, int i, int count)
 {
+	struct stat	buf;
+
 	if (i != -1)
 	{
 		if ((i % 2) == 0)
@@ -45,6 +47,8 @@ static t_lexer	*ft_close_fd_and_wait(t_shell *mini, t_lexer *copy, int i, int co
 	}
 	waitpid(-1, &g_last_exit, 0);
 	g_last_exit = g_last_exit / 255;
+	if (stat("/tmp/heredoc_mini", &buf) == 0)		// need another vay?
+		unlink("/tmp/heredoc_mini");
 	return (ft_next_command(copy));
 }
 

@@ -95,3 +95,18 @@ int	ft_exam_double_redirect(t_shell *mini)
 	}
 	return (0);
 }
+
+int	ft_exam_last_redirect(t_shell *mini)
+{
+	t_lexer	*copy;
+
+	copy = mini->lexer;
+	while (copy->next)
+		copy = copy->next;
+	if (copy->chank[0] == '<' || copy->chank[0] == '>')
+	{
+		ft_print_parser_error(&mini->lexer, SYNTAX_REDIR_ERROR);
+		return (258);
+	}
+	return (0);
+}

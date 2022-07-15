@@ -25,7 +25,7 @@ int	main (int argc, char **argv, char **env)
 		ft_readline(&mini);
 		ft_lexer(&mini.lexer, mini.input);
 
-		if(ft_parser(&mini) == 0)
+		if((g_last_exit = ft_parser(&mini)) == 0)
 		{
 			ft_execution(&mini);
 		}

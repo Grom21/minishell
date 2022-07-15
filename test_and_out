@@ -170,10 +170,29 @@ bash: /Users/narevar/fvevewve: No such file or directory
 bash-3.2$ echo $?
 127
 
+bash-3.2$ export ___=1
+bash-3.2$ echo $?
+0
+
 bash-3.2$ unset _
 bash-3.2$ env
 ...
-_=/usr/bin/env
+_=/usr/bin/env      //unset not delit this!
 
 bash-3.2$ pwd >| cat
 bash-3.2$
+
+
+bash-3.2$ unset SHLVL SHELL
+bash-3.2$ echo $SHLVL $SHELL
+
+bash-3.2$ bash
+bash-3.2$ echo $SHLVL $SHELL
+1 /bin/zsh
+
+bash-3.2$ cat < 1
+bash: 1: No such file or directory
+
+bash-3.2$ chmod -r 1
+bash-3.2$ cat < 1
+bash: 1: Permission denied

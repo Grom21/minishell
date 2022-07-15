@@ -10,6 +10,8 @@
 #include <sys/ioctl.h>
 #include <termios.h>
 #include <sys/stat.h>
+#include <fcntl.h>
+#include <errno.h>	//test perror!
 
 
 #define SYNTAX_ERROR 1
@@ -19,6 +21,7 @@
 #define NO_SUCH_FILE_OR_DIR 5
 #define OLDPWD_NOT_SET 6
 #define FILE_NAME_TOO_LONG 7
+#define SYNTAX_REDIR_ERROR 8
 
 extern int	g_last_exit;
 
@@ -164,6 +167,8 @@ int	ft_exam_syntax_quotes(t_shell *mini);
 пробелом. если да, то выводит сообщение об ошибке */
 int	ft_exam_double_redirect(t_shell *mini);
 
+int	ft_exam_last_redirect(t_shell *mini);
+
 /*функция вывода сообщений об ошибках во 2 поток */
 void	ft_print_parser_error(t_lexer **lexer, int exeption);
 
@@ -253,6 +258,10 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count);
 /*функция поиска кастомных команд, реализованных в минишелле*/
 int	ft_found_in_castom(t_shell *mini, t_lexer *lexer);
 
+void	ft_redirect(t_shell *mini, t_lexer *lexer);
+
+void	ft_run_redirect(t_shell *mini, t_lexer *lexer, int *fd);
+
 /*функция поиска и запуска бинарников в PATH*/
 void	ft_run_from_path(t_shell *mini, t_lexer *copy);
 
@@ -286,7 +295,7 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void	ft_putstr_fd(char *s, int fd);
 // void	ft_putnbr_fd(int n, int fd);
 void	ft_putchar_fd(char c, int fd);
-int	ft_isalpha(int c);
-int	ft_isdigit(int c);
+int		ft_isalpha(int c);
+int		ft_isdigit(int c);
 
 #endif

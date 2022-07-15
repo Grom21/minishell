@@ -87,6 +87,8 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count)
 		ft_work_with_fd(mini, i, count);
 		ft_work_with_fd_last_command(mini, i, count);
 	}
+	if (ft_found_redirect_in_command(mini, lexer) != 0)
+		ft_redirect(mini, lexer);
 	if ((result = ft_found_in_castom(mini, lexer)) != -1)
 		exit (result);
 	ft_run_from_path(mini, lexer);

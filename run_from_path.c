@@ -7,7 +7,8 @@ static char	**ft_start_another_program(t_shell *mini, t_lexer *copy)
 	char		*buffer;
 	char		*buffer2;
 
-	if (copy->next && copy->next->chank[0] != '|')
+	if (copy->next && copy->next->chank[0] != '|' \
+	&& copy->next->chank[0] != '<' && copy->next->chank[0] != '>')
 	{
 		if ((buffer = ft_strjoin(copy->chank, " ")) == NULL \
 		|| (buffer2 = ft_strjoin(buffer, copy->next->chank)) == NULL)
@@ -80,7 +81,7 @@ static void	start_in_path(char **path, t_lexer *copy, char **argv, char **envp)
 	{
 		if (stat(path[i], &buf) == 0)
 		{
-			if (execve(path[i],argv, envp) == -1)
+			if (execve(path[i], argv, envp) == -1)
 			{
 				write (2, "error execve!\n", 14);		// ??????
 				exit (127);			// ??????
