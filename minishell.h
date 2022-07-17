@@ -56,6 +56,7 @@ typedef struct s_shell
 	struct termios	default_settings;
 	int				fd1[2];
 	int				fd2[2];
+	pid_t			children;
 }t_shell;
 /* главная структура - хранит в себе все необходимые данные */
 
@@ -194,6 +195,8 @@ int	ft_parser_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list);
 void	ft_execution(t_shell *mini);
 
 int	ft_found_redirect_in_command(t_shell *mini, t_lexer *lexer);
+
+int	found_heredoc(t_lexer *lexer);
 
 /*кастомное эхо, работает с флагом -n*/
 int	ft_echo(t_lexer *lexer, t_list *envp_list);

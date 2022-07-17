@@ -196,3 +196,7 @@ bash: 1: No such file or directory
 bash-3.2$ chmod -r 1
 bash-3.2$ cat < 1
 bash: 1: Permission denied
+
+bash-3.2$   //ctrl+c
+bash-3.2$ echo $?
+1

@@ -45,8 +45,17 @@ static t_lexer	*ft_close_fd_and_wait(t_shell *mini, t_lexer *copy, int i, int co
 			close(mini->fd2[1]);
 		}
 	}
+	g_last_exit = found_heredoc(copy);
 	waitpid(-1, &g_last_exit, 0);
-	g_last_exit = g_last_exit / 255;
+	if (g_last_exit == 2)
+		g_last_exit = 130;
+	else if (g_last_exit == 3)
+	{
+		write (2, "^\\Quit: 3\n", 10);
+		g_last_exit = 131;
+	}
+	else
+		g_last_exit = g_last_exit / 255;
 	if (stat("/tmp/heredoc_mini", &buf) == 0)		// need another vay?
 		unlink("/tmp/heredoc_mini");
 	return (ft_next_command(copy));
@@ -67,7 +76,6 @@ void	ft_execution(t_shell *mini)
 	t_lexer	*copy;
 	int		count;
 	int		i;
-	pid_t	children;
 
 	copy = mini->lexer;
 	count = ft_found_command_with_pipe(mini->lexer);
@@ -81,11 +89,14 @@ void	ft_execution(t_shell *mini)
 			if ((g_last_exit = ft_found_in_castom(mini, copy)) != -1)
 				break ;
 		}
-		children = fork();
-		if (children < 0)
+		mini->children = fork();
+		if (mini->children < 0)
 			break ;	// need write error massage! and close fd!
-		else if (children == 0)
+		else if (mini->children == 0)
+		{
+			g_last_exit = -1;
 			ft_children_run(mini, copy, i, count);
+		}
 		else
 			copy = ft_close_fd_and_wait(mini, copy, i, count);
 	}

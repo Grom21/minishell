@@ -24,7 +24,12 @@ static char	**ft_start_another_program(t_shell *mini, t_lexer *copy)
 			exit (1);		//????????????
 	}
 	if (stat(copy->chank, &buf) == 0)	// if no writes?
+	{
+		g_last_exit = -1;		//test
+		signal(SIGINT, SIG_DFL);	//test
+		signal(SIGQUIT,SIG_DFL);	//test
 		execve(copy->chank, matrix, mini->envp);
+	}
 	return (matrix);
 }
 
@@ -81,6 +86,9 @@ static void	start_in_path(char **path, t_lexer *copy, char **argv, char **envp)
 	{
 		if (stat(path[i], &buf) == 0)
 		{
+			g_last_exit = -1;		//test
+			signal(SIGINT, SIG_DFL);	//test
+			signal(SIGQUIT,SIG_DFL);	//test
 			if (execve(path[i], argv, envp) == -1)
 			{
 				write (2, "error execve!\n", 14);		// ??????

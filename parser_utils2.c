@@ -40,6 +40,7 @@ static int	ft_exit_status(t_lexer *new, t_lexer *old, int i)	//need rewrite this
 		}
 		i++;
 		i++;
+		free (exit_status);
 	}
 	return (i);
 }

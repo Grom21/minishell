@@ -21,11 +21,11 @@ static int	ft_redirect_out_file1(t_shell *mini, t_lexer *lexer, t_lexer *now)
 	int	fd;
 
 	fd = open(now->next->chank, O_RDONLY, 0666);
-	if (EDQUOT)		//The file does not exist!!!!!!!!!! exit (1);!
-	{
-		printf("The file does not exist!\n"); //test
-		exit (1);
-	}
+	// if (EDQUOT)		//The file does not exist!!!!!!!!!! exit (1);!
+	// {
+	// 	printf("The file does not exist!\n"); //test
+	// 	exit (1);
+	// }
 	return(fd);
 }
 
@@ -36,6 +36,7 @@ static int	ft_redirect_out_file2(t_shell *mini, t_lexer *lexer, t_lexer *now)
 
 	fd = open("/tmp/heredoc_mini", O_CREAT | O_WRONLY | O_TRUNC, 0666);
 
+	g_last_exit = -2; //test
 	dup2(0, 0);
 	str = readline("> ");
 	if (ft_strcmp(str, now->next->chank) == 0)
