@@ -10,10 +10,13 @@ int	ft_echo(t_lexer *lexer, t_list *envp_list)
 	copy = lexer->next;
 	i = 0;
 	if (copy && copy->chank[0] == '-' && copy->chank[1] == 'n' \
-	&& copy->chank[2] == ' ')
+	&& (copy->chank[2] == ' ' || copy->chank[2] == '\0'))
 	{
 		flag_n = 1;
-		i = 3;
+		if (copy->chank[2] == ' ')
+			i = 3;
+		else
+			i = 2;
 	}
 	if (copy)
 	{

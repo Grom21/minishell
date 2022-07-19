@@ -15,7 +15,7 @@ static int	ft_found_funct(t_lexer *lexer, int i, t_shell *mini)
 	else if (i == 5)
 		return (ft_env(mini->envp_list));
 	else if (i == 6)
-		ft_exit(mini);
+		return (ft_exit(mini, lexer));
 	return (0);
 }
 

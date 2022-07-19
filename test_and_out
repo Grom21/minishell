@@ -96,6 +96,8 @@ bash-3.2$ unset a= b c 1d
 bash: unset: `a=': not a valid identifier
 bash: unset: `1d': not a valid identifier
 
+export _=1  //think!
+
 bash-3.2$ unset OLDPWD
 bash-3.2$ cd -
 bash: cd: OLDPWD not set
@@ -200,3 +202,14 @@ bash: 1: Permission denied
 bash-3.2$   //ctrl+c
 bash-3.2$ echo $?
 1
+
+bash: exit: 22323224444894984090938904: numeric argument required
+~ $echo $?
+255
+
+open:
+// EISDIR //path is directory
+// EACCES //Запрошенный доступ к файлу не разрешен
+// ENOENT //O_CREAT не установлен, а указанный файл не существует.
+// EROFS //Был запрошен доступ к записи, а pathname ссылается на файл, находящийся в системе, предназначенной только для чтения.
+// ETXTBSY //pathname ссылается на файл, который в настоящее время исполняется, и был запрошен доступ к записи.

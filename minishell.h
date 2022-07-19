@@ -13,7 +13,7 @@
 #include <fcntl.h>
 #include <errno.h>	//test perror!
 
-
+#define OTHER_ERROR 0
 #define SYNTAX_ERROR 1
 #define COMMAND_NOT_FOUND 2
 #define SYNTAX_PIPE_ERROR 3
@@ -22,6 +22,10 @@
 #define OLDPWD_NOT_SET 6
 #define FILE_NAME_TOO_LONG 7
 #define SYNTAX_REDIR_ERROR 8
+#define PERMISSION_DENIED 9
+#define IS_A_DIRECTORY 10
+#define FILE_IS_BUSY 11
+#define ONLY_READ 12
 
 extern int	g_last_exit;
 
@@ -215,6 +219,8 @@ t_list *ft_found_in_envp(t_list *envp_list, char *key);
 /* функция обновляет значение OLDPWD в mini->envp_list */
 int	ft_update_envp_old_pwd(t_list *envp_list, char *old_pwd);
 
+int	ft_free_envp_old_pwd(char *old_pwd);
+
 /* функция обновляет значение PWD в mini->envp_list */
 int	ft_update_envp_pwd(t_list *envp_list);
 
@@ -230,7 +236,7 @@ int	ft_export(t_lexer *lexer, t_list *envp_list);
 
 /*функция проверяет есть ли строка в виде ключ=значение в
 envp_list и если есть меняет значение, иначе добавляет новое*/
-int	ft_export_run(char *str, t_list *envp_list);
+int	ft_export_run(char *str, t_list *envp_list, int len);
 
 /*проверяет переданы ли аргументы в функцию экспорт
 если аргументов нет, выводит полный список env*/
@@ -252,7 +258,7 @@ int	ft_print_unset_error(char *str);
 
 /*функция выхода если передана команда exit
 в качестве аргумента принимает число - с каким кодом происход выход*/
-void	ft_exit(t_shell *mini);
+int	ft_exit(t_shell *mini, t_lexer *lexer);
 
 /*функция запуска сторонних бинарников в отдельном процессе
 так же в ней реализованы пайпы*/
@@ -263,7 +269,11 @@ int	ft_found_in_castom(t_shell *mini, t_lexer *lexer);
 
 void	ft_redirect(t_shell *mini, t_lexer *lexer);
 
+int	ft_redirect_error(t_lexer **lexer, int exeption);
+
 void	ft_run_redirect(t_shell *mini, t_lexer *lexer, int *fd);
+
+int ft_open_heredoc(t_lexer *lexer, int flag);
 
 /*функция поиска и запуска бинарников в PATH*/
 void	ft_run_from_path(t_shell *mini, t_lexer *copy);
@@ -292,6 +302,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strcmp_echo(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 int		ft_atoi(const char *str);		//check this ft!!
+long long int	ft_atoi_long(const char *str);
 char	*ft_itoa(int n);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);

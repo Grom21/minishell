@@ -73,9 +73,8 @@ static int	ft_change_envp(t_list *copy_envp, char *str, char *key)
 	return (0);
 }
 
-int	ft_export_run(char *str, t_list *envp_list)
+int	ft_export_run(char *str, t_list *envp_list, int len)
 {
-	int		len;
 	t_list	*last_envp;
 	t_list	*copy_envp;
 	char	*key;
@@ -87,7 +86,8 @@ int	ft_export_run(char *str, t_list *envp_list)
 	if (ft_strchr(str, '=') == NULL)
 		return (0);
 	len = ft_strlen_key(str);
-	if (!(key = (char *)malloc(sizeof(char) * (len + 1))))
+	key = (char *)malloc(sizeof(char) * (len + 1));
+	if (!key)
 		return (1);
 	ft_strlcpy(key, str, len + 1);
 	if (ft_exam_export_key(str, key) != 0)
@@ -112,16 +112,16 @@ int	ft_export(t_lexer *lexer, t_list *envp_list)
 	result = 0;
 	lexer_copy = lexer->next;
 	if (ft_exam_void(lexer, envp_list) != 0)
-		return (0);			// its realy return 0!
+		return (0);
 	if (ft_strchr(lexer_copy->chank, '=') == NULL)
 		return (0);
 	matrix = ft_split(lexer_copy->chank, ' ');
 	if (!matrix)
-		return (1);		//???
+		return (1);
 	i = 0;
 	while (matrix[i])
 	{
-		if (ft_export_run(matrix[i], envp_list) != 0)
+		if (ft_export_run(matrix[i], envp_list, 0) != 0)
 			result = 1;
 		i++;
 	}
