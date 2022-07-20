@@ -100,7 +100,7 @@ void	ft_redirect(t_shell *mini, t_lexer *lexer)
 	fd[0] = 0;
 	fd[1] = 1;
 	copy = lexer;
-	while (copy)
+	while (copy && copy->chank[0] != '|')
 	{
 		if (copy->chank[0] == '>' && copy->chank[1] == '\0')
 			fd[1] = ft_redirect_in_file1(mini, lexer, copy);

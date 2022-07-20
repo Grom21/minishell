@@ -12,7 +12,7 @@ void	ft_run_redirect(t_shell *mini, t_lexer *lexer, int *fd)
 	if (fd[1] != 1)
 	{
 		dup2(fd[1], 1);
-		close(fd[0]);
+		close(fd[1]);
 	}
 	if (!lexer || lexer->chank[0] == '<' || lexer->chank[0] == '>')
 		exit (EXIT_SUCCESS);
