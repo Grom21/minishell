@@ -2,7 +2,11 @@
 
 static int	ft_exam_unset_void(t_lexer *copy_lexer)
 {
-	if (!copy_lexer || copy_lexer->chank[0] == '|')
+	if (!copy_lexer || copy_lexer->chank[0] == '|' \
+	|| copy_lexer->chank[0] == '<' || copy_lexer->chank[0] == '>')
+		return (1);
+	if (copy_lexer && copy_lexer->chank[0] == '_' \
+	&& copy_lexer->chank[1] == '\0')
 		return (1);
 	return (0);
 }
@@ -12,12 +16,13 @@ static int	ft_exam_unset_key(char *str)
 	int	i;
 
 	i = 0;
-	if (ft_isalpha(str[i]) != 1)
+	if (ft_isalpha(str[i]) != 1 && str[i] != '_')
 		return (ft_print_unset_error(str));
 	i = 1;
 	while (str[i])
 	{
-		if ((ft_isdigit(str[i]) == 0) && (ft_isalpha(str[i]) == 0))
+		if ((ft_isdigit(str[i]) == 0) && (ft_isalpha(str[i]) == 0) \
+		&& str[i] != '_')
 			return (ft_print_unset_error(str));
 		i++;
 	}

@@ -91,15 +91,23 @@ static int	ft_redirect_out_file2(t_shell *mini, t_lexer *lexer, t_lexer *now)
 	return (fd);
 }
 
-void	ft_redirect(t_shell *mini, t_lexer *lexer)
+void	ft_redirect(t_shell *mini, t_lexer *lexer, int i, int count)
 {
 	t_lexer	*copy;
 	int		result;
 	int		fd[2];
+	int		flag;
 
 	fd[0] = 0;
 	fd[1] = 1;
 	copy = lexer;
+	flag = 0;
+	if (i != -1 && found_heredoc(lexer) != -3)
+	{
+		ft_work_with_fd(mini, i, count);
+		ft_work_with_fd_last_command(mini, i, count);
+		flag = 1;
+	}
 	while (copy && copy->chank[0] != '|')
 	{
 		if (copy->chank[0] == '>' && copy->chank[1] == '\0')
@@ -109,10 +117,13 @@ void	ft_redirect(t_shell *mini, t_lexer *lexer)
 		else if (copy->chank[0] == '<' && copy->chank[1] == '\0')
 			fd[0] = ft_redirect_out_file1(mini, lexer, copy);
 		else if (copy->chank[0] == '<' && copy->chank[1] == '<')
-		{
 			fd[0] = ft_redirect_out_file2(mini, lexer, copy);
-		}
 		copy = copy->next;
+	}
+	if (flag == 0)
+	{
+		ft_work_with_fd(mini, i, count);
+		ft_work_with_fd_last_command(mini, i, count);
 	}
 	ft_run_redirect(mini, lexer, fd);
 }

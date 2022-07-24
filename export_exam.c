@@ -7,7 +7,8 @@ int	ft_exam_void(t_lexer *lexer, t_list *envp_list)
 
 	envp_copy = envp_list;
 	lexer_copy = lexer->next;
-	if (!lexer_copy || lexer_copy->chank[0] == '|')
+	if (!lexer_copy || lexer_copy->chank[0] == '|' \
+	|| lexer_copy->chank[0] == '<' || lexer_copy->chank[0] == '>')
 	{
 		while (envp_copy)
 		{
@@ -20,6 +21,9 @@ int	ft_exam_void(t_lexer *lexer, t_list *envp_list)
 		}
 		return (1);
 	}
+	if (lexer_copy && lexer_copy->chank[0] == '_' \
+	&& lexer_copy->chank[1] == '=')
+		return (1);
 	return (0);
 }
 
@@ -28,7 +32,7 @@ int	ft_exam_export_key(char *str, char *key)
 	int	i;
 
 	i = 0;
-	if (ft_isalpha(key[i]) != 1)
+	if ((ft_isalpha(key[i]) != 1) && key[i] != '_')
 	{
 		free (key);
 		return (ft_print_export_error(str));
@@ -36,7 +40,8 @@ int	ft_exam_export_key(char *str, char *key)
 	i++;
 	while (key[i])
 	{
-		if ((ft_isdigit(key[i]) == 0) && (ft_isalpha(key[i]) == 0))
+		if (((ft_isdigit(key[i]) == 0) && (ft_isalpha(key[i]) == 0)) \
+		&& key[i] != '_')
 		{
 			free (key);
 			return (ft_print_export_error(str));

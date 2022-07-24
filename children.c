@@ -19,7 +19,7 @@ static int	ft_found_funct(t_lexer *lexer, int i, t_shell *mini)
 	return (0);
 }
 
-static void	ft_work_with_fd(t_shell *mini, int i, int count)
+void	ft_work_with_fd(t_shell *mini, int i, int count)
 {
 	if (i == 0)
 	{
@@ -42,7 +42,7 @@ static void	ft_work_with_fd(t_shell *mini, int i, int count)
 	}
 }
 
-static void	ft_work_with_fd_last_command(t_shell *mini, int i, int count)
+void	ft_work_with_fd_last_command(t_shell *mini, int i, int count)
 {
 	if (i == count && (i % 2) != 0)
 	{
@@ -82,13 +82,13 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count)
 	ft_free_memory_matrix(mini->envp);
 	if ((mini->envp = ft_new_envp(&mini->envp_list)) == NULL)
 		exit (1);
+	if (ft_found_redirect_in_command(mini, lexer) != 0)
+		ft_redirect(mini, lexer, i, count);
 	if (i != -1)
 	{
 		ft_work_with_fd(mini, i, count);
 		ft_work_with_fd_last_command(mini, i, count);
 	}
-	if (ft_found_redirect_in_command(mini, lexer) != 0)
-		ft_redirect(mini, lexer);
 	if ((result = ft_found_in_castom(mini, lexer)) != -1)
 		exit (result);
 	ft_run_from_path(mini, lexer);

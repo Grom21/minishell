@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-int	g_last_exit = 0;
-
 static void	ft_readline(t_shell *mini)
 {
 	mini->input = readline("minishell$ ");

@@ -66,8 +66,8 @@ static int	ft_exam_exit(t_shell *mini, t_lexer *copy)
 	}
 	if (copy->chank[i] != '\0')
 	{
-	write(2, "exit\nminishell: exit: too many arguments\n", 41);
-	return (1);
+		write(2, "exit\nminishell: exit: too many arguments\n", 41);
+		return (1);
 	}
 	else
 		exit (ft_atoi(copy->chank));
@@ -79,13 +79,14 @@ int	ft_exit(t_shell *mini, t_lexer *lexer)
 	int		result;
 
 	copy = lexer->next;
-	if (copy)
+	if (copy && copy->chank[0] != '|' \
+	&& copy->chank[0] != '<' && copy->chank[0] != '>')
 	{
 		result = ft_exam_exit(mini, copy);
 		if (result != 0)
 			return (result);
 	}
-	if (g_last_exit > 0)
+	if (ft_found_command_with_pipe(lexer) == -1)
 		write (2, "exit\n", 5);
 	ft_free_memory_lexer_list(&mini->lexer);
 	ft_free_memory_envp_list(&mini->envp_list);

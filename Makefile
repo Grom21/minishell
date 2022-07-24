@@ -4,3 +4,4 @@ all:
 clean:
 	rm -f minishell
 
+# -fsanitize=address

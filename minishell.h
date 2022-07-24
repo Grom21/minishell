@@ -27,7 +27,7 @@
 #define FILE_IS_BUSY 11
 #define ONLY_READ 12
 
-extern int	g_last_exit;
+int	g_last_exit;
 
 typedef struct s_list
 {
@@ -200,7 +200,11 @@ void	ft_execution(t_shell *mini);
 
 int	ft_found_redirect_in_command(t_shell *mini, t_lexer *lexer);
 
+void	ft_exit_with_redirect(t_shell *mini, t_lexer *copy, int count, int i);
+
 int	found_heredoc(t_lexer *lexer);
+
+int	ft_found_command_with_pipe(t_lexer *lexer);
 
 /*кастомное эхо, работает с флагом -n*/
 int	ft_echo(t_lexer *lexer, t_list *envp_list);
@@ -267,7 +271,11 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count);
 /*функция поиска кастомных команд, реализованных в минишелле*/
 int	ft_found_in_castom(t_shell *mini, t_lexer *lexer);
 
-void	ft_redirect(t_shell *mini, t_lexer *lexer);
+void	ft_work_with_fd(t_shell *mini, int i, int count);
+
+void	ft_work_with_fd_last_command(t_shell *mini, int i, int count);
+
+void	ft_redirect(t_shell *mini, t_lexer *lexer, int i, int count);
 
 int	ft_redirect_error(t_lexer **lexer, int exeption);
 

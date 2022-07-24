@@ -9,7 +9,7 @@ static t_lexer	*ft_next_command(t_lexer *copy)
 	return (copy);
 }
 
-static int	ft_found_command_with_pipe(t_lexer *lexer)
+int	ft_found_command_with_pipe(t_lexer *lexer)
 {
 	t_lexer	*copy;
 	int		i;
@@ -80,6 +80,7 @@ void	ft_execution(t_shell *mini)
 	copy = mini->lexer;
 	count = ft_found_command_with_pipe(mini->lexer);
 	i = -1;
+	ft_exit_with_redirect(mini, copy, count, 0);
 	while (copy)
 	{
 		if (count > 0)
