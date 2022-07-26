@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/27 01:03:42 by etisha            #+#    #+#             */
+/*   Updated: 2022/07/27 01:03:42 by etisha           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_lexer_word(t_lexer **lexer, char *input, int *start, int *stop)
@@ -33,7 +45,7 @@ void	ft_lexer_delim(t_lexer **lexer, char *input, int *start, int *stop)
 	*start = *stop;
 }
 
-void	ft_lexer_s_quotes(t_lexer **lexer, char *input, int *start, int *stop)
+void	lex_s_quotes(t_lexer **lexer, char *input, int *start, int *stop)
 {
 	(*stop)++;
 	while (input[(*stop)] != '\'' && input[(*stop)] != '\0')
@@ -44,7 +56,7 @@ void	ft_lexer_s_quotes(t_lexer **lexer, char *input, int *start, int *stop)
 	*start = *stop;
 }
 
-void	ft_lexer_d_quotes(t_lexer **lexer, char *input, int *start, int *stop)
+void	lex_d_quotes(t_lexer **lexer, char *input, int *start, int *stop)
 {
 	(*stop)++;
 	while (input[(*stop)] != '\"' && input[(*stop)] != '\0')

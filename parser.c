@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/27 01:04:15 by etisha            #+#    #+#             */
+/*   Updated: 2022/07/27 01:04:15 by etisha           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	save_delimeter(t_lexer **new, t_lexer **old, t_list *envp_list)
@@ -7,7 +19,7 @@ static int	save_delimeter(t_lexer **new, t_lexer **old, t_list *envp_list)
 	new_copy = *new;
 	while (new_copy->next)
 		new_copy = new_copy->next;
-	if (ft_parser_save(new_copy, *old, envp_list) != 0)
+	if (pars_save(new_copy, *old, envp_list) != 0)
 		return (1);
 	*old = (*old)->next;
 	if (*old && (*old)->chank[0] == ' ')
@@ -25,7 +37,7 @@ static int	save_arg(t_lexer **new, t_lexer **old, t_list *envp_list)
 	while (*old && (*old)->chank[0] != '|' && (*old)->chank[0] != '<' \
 	&& (*old)->chank[0] != '>')
 	{
-		if (ft_parser_save(new_copy, *old, envp_list) != 0)
+		if (pars_save(new_copy, *old, envp_list) != 0)
 			return (1);
 		*old = (*old)->next;
 	}
@@ -42,7 +54,7 @@ static int	save_command(t_lexer **new, t_lexer **old, t_list *envp_list)
 	while (*old && (*old)->chank[0] != ' ' && (*old)->chank[0] != '|' \
 	&& (*old)->chank[0] != '<' && (*old)->chank[0] != '>')
 	{
-		if (ft_parser_save(new_copy, *old, envp_list) != 0)
+		if (pars_save(new_copy, *old, envp_list) != 0)
 			return (1);
 		*old = (*old)->next;
 	}

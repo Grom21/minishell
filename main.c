@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/27 01:00:15 by etisha            #+#    #+#             */
+/*   Updated: 2022/07/27 01:00:19 by etisha           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void	ft_readline(t_shell *mini)
@@ -14,7 +26,7 @@ int	main(int argc, char **argv, char **env)
 	t_shell	mini;
 
 	if (argc)
-		argc =1;
+		argc = 1;
 	if (argv)
 		argv = NULL;
 	ft_new_term_settings(&mini);

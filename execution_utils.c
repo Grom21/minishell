@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution_utils.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/27 01:02:02 by etisha            #+#    #+#             */
+/*   Updated: 2022/07/27 01:02:04 by etisha           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int	ft_found_redirect_in_command(t_lexer *lexer)
@@ -28,7 +40,7 @@ int	found_heredoc(t_lexer *lexer)
 	return (g_last_exit);
 }
 
-void	ft_exit_with_redirect(t_shell *mini, t_lexer *copy, int count, int i)
+void	ft_exit_with_redir(t_shell *mini, t_lexer *copy, int count, int i)
 {
 	int	result;
 

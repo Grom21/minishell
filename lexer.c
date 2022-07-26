@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/27 01:03:46 by etisha            #+#    #+#             */
+/*   Updated: 2022/07/27 01:03:47 by etisha           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 void	ft_free_memory_lexer_list(t_lexer **lexer)
@@ -79,7 +91,7 @@ void	ft_lexer(t_lexer **lexer, char	*input)
 	int	start;
 	int	stop;
 
-	ft_lexer_run_space(lexer, input, &start, &stop);
+	lex_run_space(lexer, input, &start, &stop);
 	while (input[start] != '\0')
 	{
 		if (input[stop] != ' ' && input[stop] != '|' && input[stop] != '\"' \
@@ -91,11 +103,11 @@ void	ft_lexer(t_lexer **lexer, char	*input)
 		if ((input[stop] == '|' && input[stop] != '\0'))
 			ft_lexer_delim(lexer, input, &start, &stop);
 		if (input[stop] == '\'' && input[stop] != '\0')
-			ft_lexer_s_quotes(lexer, input, &start, &stop);
+			lex_s_quotes(lexer, input, &start, &stop);
 		if (input[stop] == '\"' && input[stop] != '\0')
-			ft_lexer_d_quotes(lexer, input, &start, &stop);
+			lex_d_quotes(lexer, input, &start, &stop);
 		if ((input[stop] == '<' && input[stop] != '\0') \
 		|| (input[stop] == '>' && input[stop] != '\0'))
-			ft_lexer_redirect(lexer, input, &start, &stop);
+			lexer_redir(lexer, input, &start, &stop);
 	}
 }

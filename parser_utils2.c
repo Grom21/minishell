@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_utils2.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/27 01:04:11 by etisha            #+#    #+#             */
+/*   Updated: 2022/07/27 01:04:11 by etisha           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	ft_single_quotes(t_lexer *new_copy, t_lexer *old_copy, int i)
@@ -105,7 +117,7 @@ static int	ft_double_quotes(t_lexer *new, t_lexer *old, int i, t_list *envp)
 	return (i);
 }
 
-int	ft_parser_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list)
+int	pars_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list)
 {
 	int	i;
 

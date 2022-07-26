@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execution.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/27 01:02:12 by etisha            #+#    #+#             */
+/*   Updated: 2022/07/27 01:02:13 by etisha           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static t_lexer	*ft_next_command(t_lexer *copy)
@@ -65,7 +77,7 @@ void	ft_execution(t_shell *mini)
 	copy = mini->lexer;
 	count = ft_found_command_with_pipe(mini->lexer);
 	i = -1;
-	ft_exit_with_redirect(mini, copy, count, 0);
+	ft_exit_with_redir(mini, copy, count, 0);
 	while (copy)
 	{
 		if (count > 0)

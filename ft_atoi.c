@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/07/27 01:02:48 by etisha            #+#    #+#             */
+/*   Updated: 2022/07/27 01:02:49 by etisha           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static int	ft_run_spaces(const char *str)
@@ -40,7 +52,7 @@ int	ft_atoi(const char *str)
 	return (result * minus);
 }
 
-long long int	ft_atoi_long(const char *str)
+long long	ft_atoi_long(const char *str)
 {
 	int				i;
 	long long int	result;
