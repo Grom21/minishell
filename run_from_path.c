@@ -74,7 +74,7 @@ static char	**ft_create_path_matrix(t_lexer *copy, t_list *envp_copy)
 	return (path_matrix);
 }
 
-static void	run_path(char **path, t_lexer *copy, char **argv, t_shell *mini)
+static void	run_path(char **path, char **argv, t_shell *mini)
 {
 	int			i;
 	struct stat	buf;
@@ -113,5 +113,5 @@ void	ft_run_from_path(t_shell *mini, t_lexer *copy)
 	start_another_program(mini, copy, argv);
 	envp_copy = ft_found_path(mini->envp_list, copy);
 	path_matrix = ft_create_path_matrix(copy, envp_copy);
-	run_path(path_matrix, copy, argv, mini);
+	run_path(path_matrix, argv, mini);
 }

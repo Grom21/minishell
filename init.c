@@ -39,18 +39,6 @@ static char	**ft_hardcode(char **comand, int i)
 	return (comand);
 }
 
-static void	ft_upgrade_envp_list_name_shell(char *value, t_list **envp_list)
-{
-	free (value);
-	value = (char *)malloc(sizeof(char) * 10);
-	if (!value)
-	{
-		ft_free_memory_envp_list(envp_list);
-		exit (1);
-	}
-	ft_crazy_save(value, "minishell");
-}
-
 static void	ft_upgrade_envp_list_shlvl(t_list **envp_list)
 {
 	t_list	*copy;

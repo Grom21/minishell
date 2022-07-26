@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_found_redirect_in_command(t_shell *mini, t_lexer *lexer)
+int	ft_found_redirect_in_command(t_lexer *lexer)
 {
 	t_lexer	*copy;
 
@@ -33,7 +33,7 @@ void	ft_exit_with_redirect(t_shell *mini, t_lexer *copy, int count, int i)
 	int	result;
 
 	if (count == -1 && copy && ft_strcmp("exit", copy->chank) == 0 \
-	&& ft_found_redirect_in_command(mini, copy) != 0)
+	&& ft_found_redirect_in_command(copy) != 0)
 	{
 		ft_redirect(mini, copy, i, count);
 		result = ft_found_in_castom(mini, copy);

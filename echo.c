@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_echo(t_lexer *lexer, t_list *envp_list)
+int	ft_echo(t_lexer *lexer)
 {
 	t_lexer	*copy;
 	int		flag_n;

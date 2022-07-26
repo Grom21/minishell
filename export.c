@@ -3,8 +3,6 @@
 static t_list	*ft_create_elem(char *env, int count_key, int count_val)
 {
 	t_list	*list;
-	int		x;
-	int		y;
 
 	list = (t_list *)malloc(sizeof(t_list));
 	if (!list)

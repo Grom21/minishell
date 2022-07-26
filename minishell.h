@@ -207,7 +207,7 @@ void	ft_error_fork(t_shell *mini, int i);
 
 /* функция ищет редиректы между пайпами
 если находит возвращает 1 иначе 0*/
-int	ft_found_redirect_in_command(t_shell *mini, t_lexer *lexer);
+int	ft_found_redirect_in_command(t_lexer *lexer);
 
 /* отдельная функция обработки команд тип exit << eof*/
 void	ft_exit_with_redirect(t_shell *mini, t_lexer *copy, int count, int i);
@@ -219,7 +219,7 @@ int	found_heredoc(t_lexer *lexer);
 int	ft_found_command_with_pipe(t_lexer *lexer);
 
 /*кастомное эхо, работает с флагом -n*/
-int	ft_echo(t_lexer *lexer, t_list *envp_list);
+int	ft_echo(t_lexer *lexer);
 
 /*меняет директорию, cd - возврат к старой директории
 cd ~ эквивалентно cd */
@@ -299,7 +299,7 @@ int	ft_redirect_error(t_lexer **lexer, int exeption);
 void	ft_run_redirect(t_shell *mini, t_lexer *lexer, int *fd);
 
 /* функция обработки heredoc*/
-int	ft_redirect_out_file2(t_shell *mini, t_lexer *lexer, t_lexer *now);
+int	ft_redirect_out_file2(t_lexer *lexer, t_lexer *now);
 
 /* функция возвращает файловый дискриптор файла куда запишется heredoc
 или откуда надо читать heredoc*/

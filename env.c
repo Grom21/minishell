@@ -2,10 +2,8 @@
 
 int	ft_env(t_list *envp_list)
 {
-	int		i;
 	t_list	*copy_envp;
 
-	i = 0;
 	copy_envp = envp_list;
 	while (copy_envp)
 	{

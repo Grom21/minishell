@@ -2,8 +2,6 @@
 
 void	ft_new_term_settings(t_shell *mini)
 {
-	struct termios	attr;
-
 	tcgetattr(STDIN_FILENO, &mini->default_settings);
 	tcgetattr(STDIN_FILENO, &mini->new_settings);
 	mini->new_settings.c_lflag &= ~ECHOCTL;

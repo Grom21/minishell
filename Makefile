@@ -1,5 +1,5 @@
 all:
-	gcc -g *.c -o minishell -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
+	gcc -g -Wall -Wextra -Werror *.c -o minishell -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
 
 clean:
 	rm -f minishell

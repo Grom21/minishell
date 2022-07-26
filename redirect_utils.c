@@ -53,7 +53,7 @@ int	ft_open_heredoc(t_lexer *lexer, int flag)
 	return (fd);
 }
 
-int	ft_redirect_out_file2(t_shell *mini, t_lexer *lexer, t_lexer *now)
+int	ft_redirect_out_file2(t_lexer *lexer, t_lexer *now)
 {
 	int		fd;
 	char	*str;

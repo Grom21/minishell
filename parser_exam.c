@@ -25,7 +25,6 @@ static t_lexer	*ft_exam_double_pipe(t_lexer *copy, t_shell *mini)
 int	ft_exam_pipe_first_last_double(t_shell *mini)
 {
 	t_lexer	*copy;
-	t_lexer	*nextlist;
 
 	copy = mini->lexer;
 	if (ft_strcmp(copy->chank, "|") == 0)

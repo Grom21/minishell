@@ -12,8 +12,11 @@ static void	ft_readline(t_shell *mini)
 int	main(int argc, char **argv, char **env)
 {
 	t_shell	mini;
-	int		result_command;
 
+	if (argc)
+		argc =1;
+	if (argv)
+		argv = NULL;
 	ft_new_term_settings(&mini);
 	ft_init(&mini, env);
 	while (1)

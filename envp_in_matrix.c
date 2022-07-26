@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	ft_save(char **envp, t_list **envp_list, int size)
+static void	ft_save(char **envp, t_list **envp_list)
 {
 	t_list	*copy;
 	int		x;
@@ -54,7 +54,6 @@ char	**ft_new_envp(t_list **envp_list)
 	char	**envp;
 	int		size;
 	t_list	*copy;
-	int		i;
 
 	copy = *envp_list;
 	size = 0;
@@ -67,6 +66,6 @@ char	**ft_new_envp(t_list **envp_list)
 	if (!envp)
 		return (NULL);
 	envp = ft_create_matrix(envp, envp_list);
-	ft_save(envp, envp_list, size);
+	ft_save(envp, envp_list);
 	return (envp);
 }

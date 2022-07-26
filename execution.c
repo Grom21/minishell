@@ -9,7 +9,7 @@ static t_lexer	*ft_next_command(t_lexer *copy)
 	return (copy);
 }
 
-static t_lexer	*ft_wait(t_shell *mini, t_lexer *copy, int i, int count)
+static t_lexer	*ft_wait(t_shell *mini, t_lexer *copy, int i)
 {
 	struct stat	buf;
 
@@ -70,7 +70,7 @@ void	ft_execution(t_shell *mini)
 	{
 		if (count > 0)
 			i = ft_open_fd(mini, i, count);
-		if (count == -1 && ft_found_redirect_in_command(mini, copy) == 0)
+		if (count == -1 && ft_found_redirect_in_command(copy) == 0)
 		{
 			g_last_exit = ft_found_in_castom(mini, copy);
 			if (g_last_exit != -1)
@@ -78,6 +78,6 @@ void	ft_execution(t_shell *mini)
 		}
 		if (ft_execution_fork(mini, copy, i, count) != 0)
 			return ;
-		copy = ft_wait(mini, copy, i, count);
+		copy = ft_wait(mini, copy, i);
 	}
 }

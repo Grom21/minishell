@@ -16,7 +16,6 @@ static void	ft_check_exit_or_not(t_shell *mini, char *str)
 
 char	**ft_create_argv(t_shell *mini, t_lexer *copy)
 {
-	struct stat	buf;
 	char		**matrix;
 	char		*buffer;
 	char		*buffer2;

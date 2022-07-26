@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int	ft_redirect_in_file1(t_shell *mini, t_lexer *lexer, t_lexer *now)
+static int	ft_redirect_in_file1(t_lexer *now)
 {
 	int	fd;
 
@@ -23,7 +23,7 @@ static int	ft_redirect_in_file1(t_shell *mini, t_lexer *lexer, t_lexer *now)
 	return (fd);
 }
 
-static int	ft_redirect_in_file2(t_shell *mini, t_lexer *lexer, t_lexer *now)
+static int	ft_redirect_in_file2(t_lexer *now)
 {
 	int	fd;
 
@@ -46,7 +46,7 @@ static int	ft_redirect_in_file2(t_shell *mini, t_lexer *lexer, t_lexer *now)
 	return (fd);
 }
 
-static int	ft_redirect_out_file1(t_shell *mini, t_lexer *lexer, t_lexer *now)
+static int	ft_redirect_out_file1(t_lexer *now)
 {
 	int	fd;
 
@@ -67,16 +67,16 @@ static int	ft_redirect_out_file1(t_shell *mini, t_lexer *lexer, t_lexer *now)
 	return (fd);
 }
 
-static t_lexer	*work_fd(t_shell *mini, t_lexer *lexer, t_lexer *copy, int *fd)
+static t_lexer	*work_fd(t_lexer *lexer, t_lexer *copy, int *fd)
 {
 	if (copy->chank[0] == '>' && copy->chank[1] == '\0')
-		fd[1] = ft_redirect_in_file1(mini, lexer, copy);
+		fd[1] = ft_redirect_in_file1(copy);
 	else if (copy->chank[0] == '>' && copy->chank[1] == '>')
-		fd[1] = ft_redirect_in_file2(mini, lexer, copy);
+		fd[1] = ft_redirect_in_file2(copy);
 	else if (copy->chank[0] == '<' && copy->chank[1] == '\0')
-		fd[0] = ft_redirect_out_file1(mini, lexer, copy);
+		fd[0] = ft_redirect_out_file1(copy);
 	else if (copy->chank[0] == '<' && copy->chank[1] == '<')
-		fd[0] = ft_redirect_out_file2(mini, lexer, copy);
+		fd[0] = ft_redirect_out_file2(lexer, copy);
 	copy = copy->next;
 	return (copy);
 }
@@ -84,7 +84,6 @@ static t_lexer	*work_fd(t_shell *mini, t_lexer *lexer, t_lexer *copy, int *fd)
 void	ft_redirect(t_shell *mini, t_lexer *lexer, int i, int count)
 {
 	t_lexer	*copy;
-	int		result;
 	int		fd[2];
 	int		flag;
 
@@ -99,7 +98,7 @@ void	ft_redirect(t_shell *mini, t_lexer *lexer, int i, int count)
 		flag = 1;
 	}
 	while (copy && copy->chank[0] != '|')
-		copy = work_fd(mini, lexer, copy, fd);
+		copy = work_fd(lexer, copy, fd);
 	if (flag == 0)
 	{
 		ft_work_with_fd(mini, i, count);

@@ -3,7 +3,7 @@
 static int	ft_found_funct(t_lexer *lexer, int i, t_shell *mini)
 {
 	if (i == 0)
-		return (ft_echo(lexer, mini->envp_list));
+		return (ft_echo(lexer));
 	else if (i == 1)
 		return (ft_cd(lexer, mini));
 	else if (i == 2)
@@ -83,7 +83,7 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count)
 	mini->envp = ft_new_envp(&mini->envp_list);
 	if (mini->envp == NULL)
 		exit (1);
-	if (ft_found_redirect_in_command(mini, lexer) != 0)
+	if (ft_found_redirect_in_command(lexer) != 0)
 		ft_redirect(mini, lexer, i, count);
 	if (i != -1)
 	{
