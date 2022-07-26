@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	ft_pwd(void)	//think about errors!
+int	ft_pwd(void)
 {
 	char	*buf;
 
@@ -8,7 +8,7 @@ int	ft_pwd(void)	//think about errors!
 	if (!buf)
 	{
 		write (2, "Error getcwd!\n", 14);
-		return (1);		//????
+		return (1);
 	}
 	ft_putstr_fd(buf, 1);
 	ft_putchar_fd('\n', 1);

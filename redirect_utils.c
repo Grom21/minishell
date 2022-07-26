@@ -52,3 +52,25 @@ int	ft_open_heredoc(t_lexer *lexer, int flag)
 	}
 	return (fd);
 }
+
+int	ft_redirect_out_file2(t_shell *mini, t_lexer *lexer, t_lexer *now)
+{
+	int		fd;
+	char	*str;
+
+	fd = ft_open_heredoc(lexer, 0);
+	g_last_exit = -2;
+	dup2(0, 0);
+	str = readline("> ");
+	while (ft_strcmp(str, now->next->chank) != 0)
+	{
+		ft_putstr_fd(str, fd);
+		ft_putstr_fd("\n", fd);
+		free (str);
+		str = readline("> ");
+	}
+	free (str);
+	close(fd);
+	fd = ft_open_heredoc(lexer, 1);
+	return (fd);
+}

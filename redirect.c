@@ -67,28 +67,18 @@ static int	ft_redirect_out_file1(t_shell *mini, t_lexer *lexer, t_lexer *now)
 	return (fd);
 }
 
-static int	ft_redirect_out_file2(t_shell *mini, t_lexer *lexer, t_lexer *now)
+static t_lexer	*work_fd(t_shell *mini, t_lexer *lexer, t_lexer *copy, int *fd)
 {
-	int		fd;
-	char	*str;
-
-	fd = ft_open_heredoc(lexer, 0);
-	g_last_exit = -2;
-	dup2(0, 0);
-	str = readline("> ");
-	if (ft_strcmp(str, now->next->chank) == 0)
-		return (0);
-	while (ft_strcmp(str, now->next->chank) != 0)
-	{
-		ft_putstr_fd(str, fd);
-		ft_putstr_fd("\n", fd);
-		free (str);
-		str = readline("> ");
-	}
-	free (str);
-	close(fd);
-	fd = ft_open_heredoc(lexer, 1);
-	return (fd);
+	if (copy->chank[0] == '>' && copy->chank[1] == '\0')
+		fd[1] = ft_redirect_in_file1(mini, lexer, copy);
+	else if (copy->chank[0] == '>' && copy->chank[1] == '>')
+		fd[1] = ft_redirect_in_file2(mini, lexer, copy);
+	else if (copy->chank[0] == '<' && copy->chank[1] == '\0')
+		fd[0] = ft_redirect_out_file1(mini, lexer, copy);
+	else if (copy->chank[0] == '<' && copy->chank[1] == '<')
+		fd[0] = ft_redirect_out_file2(mini, lexer, copy);
+	copy = copy->next;
+	return (copy);
 }
 
 void	ft_redirect(t_shell *mini, t_lexer *lexer, int i, int count)
@@ -109,17 +99,7 @@ void	ft_redirect(t_shell *mini, t_lexer *lexer, int i, int count)
 		flag = 1;
 	}
 	while (copy && copy->chank[0] != '|')
-	{
-		if (copy->chank[0] == '>' && copy->chank[1] == '\0')
-			fd[1] = ft_redirect_in_file1(mini, lexer, copy);
-		else if (copy->chank[0] == '>' && copy->chank[1] == '>')
-			fd[1] = ft_redirect_in_file2(mini, lexer, copy);
-		else if (copy->chank[0] == '<' && copy->chank[1] == '\0')
-			fd[0] = ft_redirect_out_file1(mini, lexer, copy);
-		else if (copy->chank[0] == '<' && copy->chank[1] == '<')
-			fd[0] = ft_redirect_out_file2(mini, lexer, copy);
-		copy = copy->next;
-	}
+		copy = work_fd(mini, lexer, copy, fd);
 	if (flag == 0)
 	{
 		ft_work_with_fd(mini, i, count);

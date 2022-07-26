@@ -64,7 +64,7 @@ int	ft_found_in_castom(t_shell *mini, t_lexer *lexer)
 
 	copy = lexer;
 	i = -1;
-	while (++i < 11)
+	while (++i < 7)
 	{
 		if (ft_strcmp(copy->chank, mini->comand[i]) == 0)
 		{
@@ -72,7 +72,7 @@ int	ft_found_in_castom(t_shell *mini, t_lexer *lexer)
 			return (result);
 		}
 	}
-	return (-1);	//return if not found! exam all return values!
+	return (-1);
 }
 
 void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count)
@@ -80,7 +80,8 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count)
 	int	result;
 
 	ft_free_memory_matrix(mini->envp);
-	if ((mini->envp = ft_new_envp(&mini->envp_list)) == NULL)
+	mini->envp = ft_new_envp(&mini->envp_list);
+	if (mini->envp == NULL)
 		exit (1);
 	if (ft_found_redirect_in_command(mini, lexer) != 0)
 		ft_redirect(mini, lexer, i, count);
@@ -89,11 +90,13 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count)
 		ft_work_with_fd(mini, i, count);
 		ft_work_with_fd_last_command(mini, i, count);
 	}
-	if ((result = ft_found_in_castom(mini, lexer)) != -1)
+	result = ft_found_in_castom(mini, lexer);
+	if (result != -1)
 		exit (result);
 	ft_run_from_path(mini, lexer);
-	if (lexer->chank[0] == '.' || lexer->chank[0] == '/' || lexer->chank[0] == '~')
-		ft_print_parser_error(&lexer,  NO_SUCH_FILE_OR_DIR);
+	if (lexer->chank[0] == '.' || lexer->chank[0] == '/' \
+	|| lexer->chank[0] == '~')
+		ft_print_parser_error(&lexer, NO_SUCH_FILE_OR_DIR);
 	else
 		ft_print_parser_error(&lexer, COMMAND_NOT_FOUND);
 	exit (127);

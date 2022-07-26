@@ -16,7 +16,7 @@ int	ft_found_redirect_in_command(t_shell *mini, t_lexer *lexer)
 
 int	found_heredoc(t_lexer *lexer)
 {
-	t_lexer *copy;
+	t_lexer	*copy;
 
 	copy = lexer;
 	while (copy && copy->chank[0] != '|')
@@ -35,9 +35,9 @@ void	ft_exit_with_redirect(t_shell *mini, t_lexer *copy, int count, int i)
 	if (count == -1 && copy && ft_strcmp("exit", copy->chank) == 0 \
 	&& ft_found_redirect_in_command(mini, copy) != 0)
 	{
-		// if (ft_found_redirect_in_command(mini, copy) != 0)
-			ft_redirect(mini, copy, i, count);
-		if ((result = ft_found_in_castom(mini, copy)) != -1)
+		ft_redirect(mini, copy, i, count);
+		result = ft_found_in_castom(mini, copy);
+		if (result != -1)
 			exit (result);
 	}
 }

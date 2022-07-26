@@ -3,5 +3,5 @@ all:
 
 clean:
 	rm -f minishell
-
+# -Wall -Wextra -Werror
 # -fsanitize=address

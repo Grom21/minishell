@@ -23,7 +23,7 @@ size_t	ft_strlen_key(const char *s)
 size_t	ft_strlen_value(const char *s)
 {
 	int	i;
-	int y;
+	int	y;
 
 	i = 0;
 	while (s[i] != '\0' && s[i] != '=')

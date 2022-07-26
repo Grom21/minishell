@@ -19,9 +19,9 @@ void	ft_signal(int sig)
 				rl_on_new_line();
 			else
 			{
-			ioctl(STDIN_FILENO, TIOCSTI, "\n");
-			rl_replace_line("", 0);
-			rl_on_new_line();
+				ioctl(STDIN_FILENO, TIOCSTI, "\n");
+				rl_replace_line("", 0);
+				rl_on_new_line();
 			}
 			g_last_exit = 1;
 		}

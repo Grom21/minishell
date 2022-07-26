@@ -1,6 +1,5 @@
 #include "minishell.h"
 
-
 int	ft_save_char(t_lexer *new, char c)
 {
 	char	buf[2];
@@ -8,7 +7,8 @@ int	ft_save_char(t_lexer *new, char c)
 
 	buf[1] = '\0';
 	buf[0] = c;
-	if ((str = ft_strjoin(new->chank, buf)) == NULL)
+	str = ft_strjoin(new->chank, buf);
+	if (str == NULL)
 		return (-1);
 	free (new->chank);
 	new->chank = str;

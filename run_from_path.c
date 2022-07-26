@@ -1,39 +1,34 @@
 #include "minishell.h"
 
-static char	**ft_start_another_program(t_shell *mini, t_lexer *copy)
+static void	start_another_program(t_shell *mini, t_lexer *copy, char **argv)
 {
 	struct stat	buf;
-	char		**matrix;
-	char		*buffer;
-	char		*buffer2;
+	char		*file;
 
-	if (copy->next && copy->next->chank[0] != '|' \
-	&& copy->next->chank[0] != '<' && copy->next->chank[0] != '>')
+	if (stat(copy->chank, &buf) == 0)
 	{
-		if ((buffer = ft_strjoin(copy->chank, " ")) == NULL \
-		|| (buffer2 = ft_strjoin(buffer, copy->next->chank)) == NULL)
-			exit (1);		//????????????
-		free (buffer);
-		if ((matrix = ft_split(buffer2, ' ')) == NULL)
-			exit (1);		//????????????
-		free (buffer2);
+		g_last_exit = -1;
+		ft_free_memory_envp_list(&mini->envp_list);
+		ft_free_memory_matrix(mini->comand);
+		file = ft_strjoin("", copy->chank);
+		if (!file)
+			exit (1);
+		ft_free_memory_lexer_list(&mini->lexer);
+		if (mini->input)
+			free (mini->input);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		if (execve(file, argv, mini->envp) == -1)
+		{
+			if (errno == EACCES)
+				ft_error_exec(mini, PERMISSION_DENIED, file, argv);
+			else
+				ft_error_exec(mini, OTHER_ERROR, file, argv);
+		}
 	}
-	else
-	{
-		if ((matrix = ft_split(copy->chank, ' ')) == NULL)
-			exit (1);		//????????????
-	}
-	if (stat(copy->chank, &buf) == 0)	// if no writes?
-	{
-		g_last_exit = -1;		//test
-		signal(SIGINT, SIG_DFL);	//test
-		signal(SIGQUIT,SIG_DFL);	//test
-		execve(copy->chank, matrix, mini->envp);
-	}
-	return (matrix);
 }
 
-static t_list *ft_found_path(t_list *envp_list, t_lexer *copy)
+static t_list	*ft_found_path(t_list *envp_list, t_lexer *copy)
 {
 	t_list		*envp_copy;
 
@@ -61,13 +56,16 @@ static char	**ft_create_path_matrix(t_lexer *copy, t_list *envp_copy)
 
 	path_matrix = ft_split(envp_copy->value, ':');
 	if (!path_matrix)
-		exit (1);		//??????
+		exit (1);
 	i = 0;
 	while (path_matrix[i])
 	{
-		if ((buffer = ft_strjoin(path_matrix[i], "/")) == NULL \
-		|| (buffer2 = ft_strjoin(buffer, copy->chank)) == NULL)
-			exit (1);		//??????
+		buffer = ft_strjoin(path_matrix[i], "/");
+		if (buffer == NULL)
+			exit (1);
+		buffer2 = ft_strjoin(buffer, copy->chank);
+		if (buffer2 == NULL)
+			exit (1);
 		free (path_matrix[i]);
 		free (buffer);
 		path_matrix[i] = buffer2;
@@ -76,29 +74,33 @@ static char	**ft_create_path_matrix(t_lexer *copy, t_list *envp_copy)
 	return (path_matrix);
 }
 
-static void	start_in_path(char **path, t_lexer *copy, char **argv, char **envp)
+static void	run_path(char **path, t_lexer *copy, char **argv, t_shell *mini)
 {
 	int			i;
 	struct stat	buf;
 
-	i = 0;
-	while (path[i])
+	i = -1;
+	while (path[++i])
 	{
 		if (stat(path[i], &buf) == 0)
 		{
-			g_last_exit = -1;		//test
-			signal(SIGINT, SIG_DFL);	//test
-			signal(SIGQUIT,SIG_DFL);	//test
-			if (execve(path[i], argv, envp) == -1)
+			g_last_exit = -1;
+			ft_free_memory_envp_list(&mini->envp_list);
+			ft_free_memory_matrix(mini->comand);
+			ft_free_memory_lexer_list(&mini->lexer);
+			if (mini->input)
+				free (mini->input);
+			signal(SIGINT, SIG_DFL);
+			signal(SIGQUIT, SIG_DFL);
+			if (execve(path[i], argv, mini->envp) == -1)
 			{
-				write (2, "error execve!\n", 14);		// ??????
-				exit (127);			// ??????
+				if (errno == EACCES)
+					ft_error_exec(mini, PERMISSION_DENIED, path[i], argv);
+				else
+					ft_error_exec(mini, OTHER_ERROR, path[i], argv);
 			}
 		}
-		i++;
 	}
-	ft_free_memory_matrix(path);
-	ft_free_memory_matrix(argv);
 }
 
 void	ft_run_from_path(t_shell *mini, t_lexer *copy)
@@ -107,8 +109,9 @@ void	ft_run_from_path(t_shell *mini, t_lexer *copy)
 	char	**path_matrix;
 	char	**argv;
 
-	argv = ft_start_another_program(mini, copy);
+	argv = ft_create_argv(mini, copy);
+	start_another_program(mini, copy, argv);
 	envp_copy = ft_found_path(mini->envp_list, copy);
 	path_matrix = ft_create_path_matrix(copy, envp_copy);
-	start_in_path(path_matrix, copy, argv, mini->envp);
+	run_path(path_matrix, copy, argv, mini);
 }

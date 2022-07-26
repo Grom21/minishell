@@ -13,13 +13,15 @@ static void	ft_crazy_save(char *comand, char *word)
 	comand[i] = '\0';
 }
 
-static char **ft_hardcode(char **comand, int i)
+static char	**ft_hardcode(char **comand, int i)
 {
-	if (!(comand = (char **)malloc(sizeof(char *) * 12)))
+	comand = (char **)malloc(sizeof(char *) * 8);
+	if (!comand)
 		return (NULL);
-	while (i < 11)
+	while (i < 7)
 	{
-		if (!(comand[i] = (char *)malloc(sizeof(char) * 7)))
+		comand[i] = (char *)malloc(sizeof(char) * 7);
+		if (!comand[i])
 		{
 			ft_free_memory_split(comand, i);
 			return (NULL);
@@ -33,15 +35,11 @@ static char **ft_hardcode(char **comand, int i)
 	ft_crazy_save(comand[4], "unset");
 	ft_crazy_save(comand[5], "env");
 	ft_crazy_save(comand[6], "exit");
-	ft_crazy_save(comand[7], "<");
-	ft_crazy_save(comand[8], "<<");
-	ft_crazy_save(comand[9], ">");
-	ft_crazy_save(comand[10], ">>");
-	comand[11] = NULL;
+	comand[7] = NULL;
 	return (comand);
 }
 
-static void ft_upgrade_envp_list_name_shell(char *value, t_list **envp_list)
+static void	ft_upgrade_envp_list_name_shell(char *value, t_list **envp_list)
 {
 	free (value);
 	value = (char *)malloc(sizeof(char) * 10);
@@ -56,15 +54,12 @@ static void ft_upgrade_envp_list_name_shell(char *value, t_list **envp_list)
 static void	ft_upgrade_envp_list_shlvl(t_list **envp_list)
 {
 	t_list	*copy;
-	int shlvl;
+	int		shlvl;
 
 	copy = *envp_list;
-	while(copy)
+	while (copy)
 	{
-		if (ft_strcmp(copy->key, "SHELL") == 0 \
-		&& ft_strcmp(copy->value, "minishell") != 0)
-			ft_upgrade_envp_list_name_shell(copy->value, envp_list);
-		else if (ft_strcmp(copy->key, "SHLVL") == 0)
+		if (ft_strcmp(copy->key, "SHLVL") == 0)
 		{
 			shlvl = ft_atoi(copy->value) + 1;
 			free (copy->value);

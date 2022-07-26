@@ -25,7 +25,7 @@ static void	ft_exit_error(t_shell *mini)
 	exit (255);
 }
 
-static int ft_exam_long(char *str)
+static int	ft_exam_long(char *str)
 {
 	long long int	i;
 
@@ -86,7 +86,7 @@ int	ft_exit(t_shell *mini, t_lexer *lexer)
 		if (result != 0)
 			return (result);
 	}
-	if (ft_found_command_with_pipe(lexer) == -1)
+	if (ft_found_command_with_pipe(mini->lexer) == -1)
 		write (2, "exit\n", 5);
 	ft_free_memory_lexer_list(&mini->lexer);
 	ft_free_memory_envp_list(&mini->envp_list);

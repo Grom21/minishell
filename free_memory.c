@@ -5,7 +5,7 @@ void	ft_free_memory_matrix(char **matrix)
 	int	i;
 
 	i = 0;
-	while(matrix[i])
+	while (matrix[i])
 	{
 		free (matrix[i]);
 		i++;

@@ -30,7 +30,7 @@ static char	**ft_create_matrix(char	**envp, t_list **envp_list)
 	int		i;
 	int		size;
 	t_list	*copy;
-	
+
 	copy = *envp_list;
 	i = 0;
 	while (copy)

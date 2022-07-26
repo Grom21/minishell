@@ -9,7 +9,7 @@ static void	ft_readline(t_shell *mini)
 		add_history(mini->input);
 }
 
-int	main (int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
 	t_shell	mini;
 	int		result_command;
@@ -22,7 +22,8 @@ int	main (int argc, char **argv, char **env)
 		signal(SIGQUIT, SIG_IGN);
 		ft_readline(&mini);
 		ft_lexer(&mini.lexer, mini.input);
-		if((g_last_exit = ft_parser(&mini)) == 0)
+		g_last_exit = ft_parser(&mini);
+		if (g_last_exit == 0)
 			ft_execution(&mini);
 		free (mini.input);
 		mini.input = NULL;

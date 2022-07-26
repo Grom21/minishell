@@ -7,7 +7,6 @@ int	ft_isdigit(int c)
 	else
 		return (0);
 }
-//*//функция проверяет предана цифра или нет
 
 int	ft_isalpha(int c)
 {
@@ -16,4 +15,3 @@ int	ft_isalpha(int c)
 	else
 		return (0);
 }
-//*// функция проверяет буква или нет и возвращает 0 или 1

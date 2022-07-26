@@ -73,7 +73,6 @@ static void	ft_create_next(t_list **list, char *env, t_list **lastlist)
 	}
 }
 
-
 void	ft_init_envp_list(t_list **envp_list, char **env)
 {
 	int		x;

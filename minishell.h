@@ -1,7 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-#include <stdio.h> //printf only?
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <readline/readline.h>
@@ -11,7 +11,7 @@
 #include <termios.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <errno.h>	//test perror!
+#include <errno.h>
 
 #define OTHER_ERROR 0
 #define SYNTAX_ERROR 1
@@ -81,8 +81,7 @@ void	ft_default_term(t_shell *mini);
 void	ft_init(t_shell	*mini, char **env);
 
 /*функция запускается при старте прграммы и сохраняет переменные окружения в листы
-для последующей работы с ними
-использует маллок! - для очистки используй ft_free_memory_envp_list(t_list **envp_list);
+для последующей работы с ними.
 в случае ошибики чистит за собой память и выходит с кодом 1 */
 void	ft_init_envp_list(t_list **envp_list, char **env);
 
@@ -172,6 +171,8 @@ int	ft_exam_syntax_quotes(t_shell *mini);
 пробелом. если да, то выводит сообщение об ошибке */
 int	ft_exam_double_redirect(t_shell *mini);
 
+/*функция проверяет есть ли что-то после редиректа, если нет, выводит сообщение
+об ошибке */
 int	ft_exam_last_redirect(t_shell *mini);
 
 /*функция вывода сообщений об ошибках во 2 поток */
@@ -198,12 +199,23 @@ int	ft_parser_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list);
 /*основная функция исполнения команд*/
 void	ft_execution(t_shell *mini);
 
+/* закрывает файловые дискрипторы пайпов*/
+void	ft_close_fd(t_shell *mini, int i);
+
+/* вывод сообщение об ошибке форка*/
+void	ft_error_fork(t_shell *mini, int i);
+
+/* функция ищет редиректы между пайпами
+если находит возвращает 1 иначе 0*/
 int	ft_found_redirect_in_command(t_shell *mini, t_lexer *lexer);
 
+/* отдельная функция обработки команд тип exit << eof*/
 void	ft_exit_with_redirect(t_shell *mini, t_lexer *copy, int count, int i);
 
+/* функция ищет << между пайпами если находит возвращает -3 иначе g_last_exit*/
 int	found_heredoc(t_lexer *lexer);
 
+/* функция считает сколько всего пайпов, если 0 то возвращает -1*/
 int	ft_found_command_with_pipe(t_lexer *lexer);
 
 /*кастомное эхо, работает с флагом -n*/
@@ -271,20 +283,36 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count);
 /*функция поиска кастомных команд, реализованных в минишелле*/
 int	ft_found_in_castom(t_shell *mini, t_lexer *lexer);
 
+/* функция работы с файловыми дискрипоторами в дочернем процессе*/
 void	ft_work_with_fd(t_shell *mini, int i, int count);
 
+/* функция работы с файловыми дискрипоторами в дочернем процессе (последний пайп)*/
 void	ft_work_with_fd_last_command(t_shell *mini, int i, int count);
 
+/* функция работы с файловыми дискрипоторами в случае редиректа в команде*/
 void	ft_redirect(t_shell *mini, t_lexer *lexer, int i, int count);
 
+/*вывод ошибок при работе с редиректом*/
 int	ft_redirect_error(t_lexer **lexer, int exeption);
 
+/* функция поиска и запуска команды если есть редирект*/
 void	ft_run_redirect(t_shell *mini, t_lexer *lexer, int *fd);
 
+/* функция обработки heredoc*/
+int	ft_redirect_out_file2(t_shell *mini, t_lexer *lexer, t_lexer *now);
+
+/* функция возвращает файловый дискриптор файла куда запишется heredoc
+или откуда надо читать heredoc*/
 int ft_open_heredoc(t_lexer *lexer, int flag);
 
 /*функция поиска и запуска бинарников в PATH*/
 void	ft_run_from_path(t_shell *mini, t_lexer *copy);
+
+/* функция создания массива argv для запуска бинарника*/
+char	**ft_create_argv(t_shell *mini, t_lexer *copy);
+
+/* функция вывода сообщений об ошибках exec*/
+void	ft_error_exec(t_shell *mini, int exeption, char *str, char **argv);
 
 /* OTHER */
 
@@ -309,13 +337,12 @@ size_t	ft_strlen_key(const char *s);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strcmp_echo(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
-int		ft_atoi(const char *str);		//check this ft!!
+int		ft_atoi(const char *str);
 long long int	ft_atoi_long(const char *str);
 char	*ft_itoa(int n);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 void	ft_putstr_fd(char *s, int fd);
-// void	ft_putnbr_fd(int n, int fd);
 void	ft_putchar_fd(char c, int fd);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
