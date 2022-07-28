@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:15 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:04:15 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/27 04:20:52 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,8 @@ int	ft_parser(t_shell *mini)
 {
 	int	result;
 
+	if (mini->lexer && mini->lexer->chank[0] == '\0')
+		return (g_last_exit);
 	result = ft_exam_pipe_first_last_double(mini);
 	if (result != 0)
 		return (result);

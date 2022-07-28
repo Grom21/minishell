@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:00:15 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:00:19 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 02:53:26 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **env)
 		ft_readline(&mini);
 		ft_lexer(&mini.lexer, mini.input);
 		g_last_exit = ft_parser(&mini);
-		if (g_last_exit == 0)
+		if (g_last_exit == 0 && mini.lexer->chank[0] != '\0')
 			ft_execution(&mini);
 		free (mini.input);
 		mini.input = NULL;

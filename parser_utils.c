@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:06 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:04:07 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 00:22:16 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ft_take_envp(t_lexer *new, t_lexer *old, int i, t_list *envp)
 		copy_envp = copy_envp->next;
 	}
 	while (old->chank[i + 1] && old->chank[i + 1] != '$' \
-	&& old->chank[i + 1] != '\"')
+	&& old->chank[i + 1] != '\"' && old->chank[i + 1] != ' ')
 		i++;
 	return (i);
 }

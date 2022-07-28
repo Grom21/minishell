@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:11 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:04:11 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 02:27:18 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,60 +61,59 @@ static int	ft_exit_status(t_lexer *new, t_lexer *old, int i)
 
 static int	ft_word(t_lexer *new, t_lexer *old, int i, t_list *envp)
 {
-	while (old->chank[i] != '\0')
+	char	*s;
+
+	s = old->chank;
+	while (s[i] != '\0')
 	{
 		i = ft_exit_status(new, old, i);
 		if (i < 0)
 			return (-1);
-		if (old->chank[i] == '$' && old->chank[i + 1] == '$')
+		if (s[i] == '$' && s[i + 1] != '?' && s[i + 1] != ' ' \
+		&& s[i + 1] != '$' && s[i + 1] != '\0')
 		{
-			if (ft_save_char(new, old->chank[i++]) != 0 \
-			|| ft_save_char(new, old->chank[i]) != 0)
-				return (-1);
-		}
-		else if (old->chank[i] == '$' && old->chank[i + 1] != '?')
-		{
-			i = ft_take_envp(new, old, i, envp);
+			i = ft_take_envp(new, old, i, envp) + 1;
 			if (i < 0)
 				return (-1);
 		}
-		else
+		if ((s[i] == '$' && (s[i + 1] == '$' || s[i + 1] == '\0' \
+		|| s[i + 1] == ' ')) || (s[i] != '\0' && s[i] != '$'))
 		{
 			if (ft_save_char(new, old->chank[i]) != 0)
 				return (-1);
+			i++;
 		}
-		i++;
 	}
 	return (i);
 }
 
 static int	ft_double_quotes(t_lexer *new, t_lexer *old, int i, t_list *envp)
 {
-	while (old->chank[++i] != '\"')
+	char	*s;
+
+	s = old->chank;
+	i++;
+	while (s[i] != '\"')
 	{
 		i = ft_exit_status(new, old, i);
 		if (i < 0)
 			return (-1);
-		else if (old->chank[i] == '$' && old->chank[i + 1] == '$')
+		if (s[i] == '$' && s[i + 1] != '?' && s[i + 1] != ' ' \
+		&& s[i + 1] != '$' && s[i + 1] != '\"')
 		{
-			if (ft_save_char(new, old->chank[i++]) != 0 \
-			|| ft_save_char(new, old->chank[i]) != 0)
-				return (-1);
-		}
-		else if (old->chank[i] == '$' && old->chank[i + 1] != '?')
-		{
-			i = ft_take_envp(new, old, i, envp);
+			i = ft_take_envp(new, old, i, envp) + 1;
 			if (i < 0)
 				return (-1);
 		}
-		else
+		if ((s[i] == '$' && (s[i + 1] == '$' || s[i + 1] == '\"' \
+		|| s[i + 1] == ' ')) || (s[i] != '\"' && s[i] != '$'))
 		{
 			if (ft_save_char(new, old->chank[i]) != 0)
 				return (-1);
+			i++;
 		}
 	}
-	i++;
-	return (i);
+	return (i + 1);
 }
 
 int	pars_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list)
