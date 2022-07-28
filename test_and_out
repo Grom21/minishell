@@ -226,6 +226,8 @@ $ 0
 
 bash-3.2$ /bin/ls/ewdew
 bash: /bin/ls/ewdew: Not a directory
+bash-3.2$ echo $?
+126
 
 bash-3.2$ pwd > 1
 bash-3.2$ cat 1

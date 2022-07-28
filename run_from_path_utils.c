@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:35 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:04:36 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 03:39:23 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,24 @@ char	**ft_create_argv(t_shell *mini, t_lexer *copy)
 			exit (1);
 	}
 	return (matrix);
+}
+
+void	ft_error_stat(t_shell *mini, int exeption, char *str, char **argv)
+{
+	if (exeption == NOT_A_DIRECTORY)
+	{
+		write(2, "minishell: ", 11);
+		write(2, str, ft_strlen(str));
+		write(2, ": Not a directory\n", 18);
+		ft_free_memory_envp_list(&mini->envp_list);
+		ft_free_memory_matrix(mini->comand);
+		ft_free_memory_lexer_list(&mini->lexer);
+		ft_free_memory_matrix(mini->envp);
+		if (mini->input)
+			free (mini->input);
+		ft_free_memory_matrix(argv);
+		exit (126);
+	}
 }
 
 void	ft_error_exec(t_shell *mini, int exeption, char *str, char **argv)

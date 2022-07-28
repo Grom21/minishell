@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 00:58:46 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 04:13:40 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 03:44:52 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define IS_A_DIRECTORY 10
 # define FILE_IS_BUSY 11
 # define ONLY_READ 12
+# define NOT_A_DIRECTORY 13
 
 int	g_last_exit;
 
@@ -323,6 +324,9 @@ char		**ft_create_argv(t_shell *mini, t_lexer *copy);
 
 /* функция вывода сообщений об ошибках exec*/
 void		ft_error_exec(t_shell *mini, int exeption, char *str, char **argv);
+
+/* функция вывода сообщения если компонент пути не директория*/
+void		ft_error_stat(t_shell *mini, int exeption, char *str, char **argv);
 
 /* OTHER */
 

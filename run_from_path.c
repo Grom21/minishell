@@ -6,16 +6,15 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:44 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:04:45 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 03:41:31 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	start_another_program(t_shell *mini, t_lexer *copy, char **argv)
+static void	start_prog(t_shell *mini, t_lexer *copy, char **argv, char *file)
 {
 	struct stat	buf;
-	char		*file;
 
 	if (stat(copy->chank, &buf) == 0)
 	{
@@ -38,6 +37,8 @@ static void	start_another_program(t_shell *mini, t_lexer *copy, char **argv)
 				ft_error_exec(mini, OTHER_ERROR, file, argv);
 		}
 	}
+	if (errno == ENOTDIR)
+		ft_error_stat(mini, NOT_A_DIRECTORY, copy->chank, argv);
 }
 
 static t_list	*ft_found_path(t_list *envp_list, t_lexer *copy)
@@ -122,7 +123,7 @@ void	ft_run_from_path(t_shell *mini, t_lexer *copy)
 	char	**argv;
 
 	argv = ft_create_argv(mini, copy);
-	start_another_program(mini, copy, argv);
+	start_prog(mini, copy, argv, NULL);
 	envp_copy = ft_found_path(mini->envp_list, copy);
 	path_matrix = ft_create_path_matrix(copy, envp_copy);
 	run_path(path_matrix, argv, mini);
