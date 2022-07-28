@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:06 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/28 00:22:16 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 15:00:20 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,4 +99,19 @@ void	ft_parser_create(t_lexer **new)
 			return ;
 		}
 	}
+}
+
+int	ft_save_or_skip(t_lexer *new, t_lexer *old, int i)
+{
+	if (old->chank[i] == '$' && old->chank[i + 1] == '\0' && old->next \
+	&& old->next->chank[0] != '|' && old->next->chank[0] != '<' \
+	&& old->next->chank[0] != '>' && old->next->chank[0] != ' ')
+		i++;
+	else
+	{
+		if (ft_save_char(new, old->chank[i]) != 0)
+			return (-1);
+		i++;
+	}
+	return (i);
 }

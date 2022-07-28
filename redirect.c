@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:31 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:04:32 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 12:07:19 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	ft_redirect(t_shell *mini, t_lexer *lexer, int i, int count)
 	}
 	while (copy && copy->chank[0] != '|')
 		copy = work_fd(lexer, copy, fd);
-	if (flag == 0)
+	if (i != -1 && flag == 0)
 	{
 		ft_work_with_fd(mini, i, count);
 		ft_work_with_fd_last_command(mini, i, count);

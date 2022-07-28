@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:11 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/28 02:27:18 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/28 15:02:42 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ static int	ft_word(t_lexer *new, t_lexer *old, int i, t_list *envp)
 		if ((s[i] == '$' && (s[i + 1] == '$' || s[i + 1] == '\0' \
 		|| s[i + 1] == ' ')) || (s[i] != '\0' && s[i] != '$'))
 		{
-			if (ft_save_char(new, old->chank[i]) != 0)
+			i = ft_save_or_skip(new, old, i);
+			if (i < 0)
 				return (-1);
-			i++;
 		}
 	}
 	return (i);
@@ -108,9 +108,9 @@ static int	ft_double_quotes(t_lexer *new, t_lexer *old, int i, t_list *envp)
 		if ((s[i] == '$' && (s[i + 1] == '$' || s[i + 1] == '\"' \
 		|| s[i + 1] == ' ')) || (s[i] != '\"' && s[i] != '$'))
 		{
-			if (ft_save_char(new, old->chank[i]) != 0)
+			i = ft_save_or_skip(new, old, i);
+			if (i < 0)
 				return (-1);
-			i++;
 		}
 	}
 	return (i + 1);

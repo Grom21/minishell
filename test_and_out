@@ -232,3 +232,6 @@ bash-3.2$ echo $?
 bash-3.2$ pwd > 1
 bash-3.2$ cat 1
 /Users/narevar/Downloads
+
+bash-3.2$ echo '$PWD'
+$PWD
