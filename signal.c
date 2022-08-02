@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:49 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:04:50 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/02 04:51:05 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ void	ft_signal(int sig)
 	if (sig == SIGINT)
 	{
 		if (g_last_exit == -1)
-		{
 			write (2, "^C\n", 3);
-		}
 		else if (g_last_exit == -2)
 		{
 			write (2, "\n", 1);

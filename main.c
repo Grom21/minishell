@@ -6,11 +6,13 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:00:15 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/28 02:53:26 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/01 01:30:43 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	g_last_exit;
 
 static void	ft_readline(t_shell *mini)
 {

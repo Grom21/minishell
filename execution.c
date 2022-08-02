@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:02:12 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/28 13:12:56 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/03 02:32:49 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ static t_lexer	*ft_wait(t_shell *mini, t_lexer *copy, int i)
 
 	ft_close_fd(mini, i);
 	g_last_exit = found_heredoc(copy);
+	signal(SIGINT, SIG_IGN);			//need know what we run? minishell?
 	waitpid(-1, &g_last_exit, 0);
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &mini->new_settings); //test
+	write(1, "\n", 1); // test
+	signal(SIGINT, ft_signal);	 // test
 	if (g_last_exit == 2)
 		g_last_exit = 130;
 	else if (g_last_exit == 3)

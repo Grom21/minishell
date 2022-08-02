@@ -235,3 +235,49 @@ bash-3.2$ cat 1
 
 bash-3.2$ echo '$PWD'
 $PWD
+
+# bash-3.2$ |
+# bash: syntax error near unexpected token `|'
+# bash-3.2$ echo $?
+# 258
+
+# bash-3.2$ | pwd
+# bash: syntax error near unexpected token `|'
+# bash-3.2$ echo $?
+# 258
+
+# bash-3.2$ $DJCDV
+# bash-3.2$ echo $?
+# 0
+
+# bash-3.2$ echo 1|||echo 2
+# bash: syntax error near unexpected token `|'
+# bash-3.2$ echo $?
+# 258
+
+# bash-3.2$ sdcsd
+# bash: sdcsd: command not found
+# bash-3.2$ exit                      //kak ctrl + d tak i exit no arguments!
+# etisha@at-k2 ~ % echo $?
+# 127
+
+# bash-3.2$ cat ""
+# cat: : No such file or directory
+# bash-3.2$ echo $?
+# 1
+
+# bash-3.2$ cd ''
+# bash-3.2$ pwd
+# /Users/etisha/Downloads
+# bash-3.2$ cd ""
+# bash-3.2$ pwd
+# /Users/etisha/Downloads
+# bash-3.2$ cd ""
+# bash-3.2$ echo $?
+# 0
+
+# bash-3.2$ pwd > | cat
+# bash: syntax error near unexpected token `|'
+# bash-3.2$ echo $?
+# 258
+

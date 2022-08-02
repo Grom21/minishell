@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:15 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 04:20:52 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/01 02:33:45 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,10 @@ int	ft_parser(t_shell *mini)
 	result = ft_open_quotes(mini, NULL, NULL);
 	if (result != 0)
 		return (result);
+	if (ft_strcmp(mini->lexer->chank, "exit") == 0 && \
+	(!mini->lexer->next || mini->lexer->next->chank[0] == '\0'))
+		ft_exit(mini, mini->lexer);
 	if (mini->lexer->chank[0] == '\0')
-		return (1);
+		return (g_last_exit);
 	return (0);
 }

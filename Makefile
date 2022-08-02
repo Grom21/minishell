@@ -6,11 +6,11 @@
 #    By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/27 01:03:54 by etisha            #+#    #+#              #
-#    Updated: 2022/07/28 15:02:37 by etisha           ###   ########.fr        #
+#    Updated: 2022/08/01 01:36:12 by etisha           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = cc
+CC = gcc
 
 CFLAGS = -Wall -Wextra -Werror
 

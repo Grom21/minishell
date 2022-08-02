@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:02:17 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:02:18 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/01 02:34:50 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,18 @@ void	ft_exit_signal(t_shell *mini)
 	write (2, "\033[0F", 4);
 	write(2, "minishell$ exit\n", 16);
 	ft_default_term(mini);
-	exit (EXIT_SUCCESS);
+	exit (g_last_exit);
 }
 
-static void	ft_exit_error(t_shell *mini)
+static void	ft_exit_error(t_shell *mini, t_lexer *copy)
 {
+	int	i;
+
+	write(2, "exit\nminishell: exit: ", 22);
+	i = 0;
+	while (copy->chank[i] != '\0' && copy->chank[i] != ' ')
+		write(2, &copy->chank[i++], 1);
+	write (2, ": numeric argument required\n", 28);
 	ft_free_memory_lexer_list(&mini->lexer);
 	ft_free_memory_envp_list(&mini->envp_list);
 	ft_free_memory_matrix(mini->envp);
@@ -60,20 +67,15 @@ static int	ft_exam_exit(t_shell *mini, t_lexer *copy)
 {
 	int	i;
 
+	if (copy->chank[0] == '\0' || copy->chank[0] == ' ')
+		ft_exit_error(mini, copy);
 	i = 0;
 	while (copy->chank[i] && copy->chank[i] != ' ')
 	{
 		if ((i != 0 && ft_isdigit(copy->chank[i]) == 0) \
 		|| (i == 0 && copy->chank[i] != '-' && copy->chank[i] != '+' \
 		&& ft_isdigit(copy->chank[i]) == 0) || ft_exam_long(copy->chank) != 0)
-		{
-			write(2, "exit\nminishell: exit: ", 22);
-			i = 0;
-			while (copy->chank[i] != '\0' && copy->chank[i] != ' ')
-				write(2, &copy->chank[i++], 1);
-			write (2, ": numeric argument required\n", 28);
-			ft_exit_error(mini);
-		}
+			ft_exit_error(mini, copy);
 		i++;
 	}
 	if (copy->chank[i] != '\0')
@@ -107,5 +109,5 @@ int	ft_exit(t_shell *mini, t_lexer *lexer)
 	if (mini->input)
 		free (mini->input);
 	ft_default_term(mini);
-	exit (EXIT_SUCCESS);
+	exit (g_last_exit);
 }

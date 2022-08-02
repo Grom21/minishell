@@ -86,3 +86,35 @@ int	ft_redirect_out_file2(t_lexer *lexer, t_lexer *now)
 	fd = ft_open_heredoc(lexer, 1);
 	return (fd);
 }
+
+char	**ft_return_space(char **matrix)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (matrix[i])
+	{
+		j = 0;
+		while (matrix[i][j])
+		{
+			if (matrix[i][j] == '\t')
+				matrix[i][j] = ' ';
+			if (matrix[i][j] == '\n')
+				matrix[i][j] = '\0';
+			j++;
+		}
+		i++;
+	}
+	return (matrix);
+}
+
+void	ft_print_token_error(char *str, int exeption)
+{
+	if (exeption == SYNTAX_TOKEN_ERROR)
+	{
+		write(2, "minishell: syntax error near unexpected token `", 47);
+		ft_putstr_fd(str, 2);
+		write(2, "'\n", 2);
+	}
+}

@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:01 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:04:02 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/01 02:05:51 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static t_lexer	*ft_exam_double_pipe(t_lexer *copy, t_shell *mini)
 				nextlist = nextlist->next;
 			if (nextlist->chank[0] == '|')
 			{
-				ft_print_parser_error(&mini->lexer, SYNTAX_ERROR);
+				ft_print_parser_error(&mini->lexer, SYNTAX_PIPE_ERROR);
 				return (NULL);
 			}
 		}
@@ -42,15 +42,15 @@ int	ft_exam_pipe_first_last_double(t_shell *mini)
 	if (ft_strcmp(copy->chank, "|") == 0)
 	{
 		ft_print_parser_error(&mini->lexer, SYNTAX_PIPE_ERROR);
-		return (SYNTAX_PIPE_ERROR);
+		return (258);
 	}
 	copy = ft_exam_double_pipe(copy, mini);
 	if (!copy)
-		return (SYNTAX_ERROR);
+		return (258);
 	if (ft_strcmp(copy->chank, "|") == 0)
 	{
-		ft_print_parser_error(&mini->lexer, SYNTAX_ERROR);
-		return (SYNTAX_ERROR);
+		ft_print_parser_error(&mini->lexer, SYNTAX_PIPE_ERROR);
+		return (258);
 	}
 	return (0);
 }
@@ -98,8 +98,8 @@ int	ft_exam_double_redirect(t_shell *mini)
 			if (nextlist->chank[0] == '<' || nextlist->chank[0] == '>' \
 			|| nextlist->chank[0] == '|')
 			{
-				ft_print_parser_error(&mini->lexer, SYNTAX_ERROR);
-				return (SYNTAX_ERROR);
+				ft_print_token_error(nextlist->chank, SYNTAX_TOKEN_ERROR);
+				return (258);
 			}
 		}
 		copy = copy->next;

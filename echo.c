@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: sbilli <sbilli@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:01:24 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/30 00:42:06 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/31 20:26:42 by sbilli           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ static int	ft_echo_flag(t_lexer *lexer, int *i)
 
 	flag_n = 0;
 	copy = lexer->next;
-	if (copy && copy->chank[0] == '-' && copy->chank[1] == 'n' \
-	&& (copy->chank[2] == ' ' || copy->chank[2] == '\0'))
+	while (copy && copy->chank[*i] == '-' && copy->chank[*i + 1] == 'n' \
+	&& (copy->chank[*i + 2] == ' ' || copy->chank[*i + 2] == '\0'))
 	{
 		flag_n = 1;
 		if (copy->chank[2] == ' ')
-			*i = 3;
+			*i = *i + 3;
 		else
-			*i = 2;
+			*i = *i + 2;
 	}
 	return (flag_n);
 }

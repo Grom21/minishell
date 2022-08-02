@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: sbilli <sbilli@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:01:13 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:01:15 by etisha           ###   ########.fr       */
+/*   Updated: 2022/07/31 20:26:32 by sbilli           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,8 @@ int	ft_cd(t_lexer *lexer, t_shell *mini)
 	int		result;
 
 	copy = lexer->next;
+	if (copy && copy->chank[0] == '\0')
+		return (0);
 	if (!copy || copy->chank[0] == '|' || (copy->chank[0] == '~' && \
 	(copy->chank[1] == ' ' || copy->chank[1] == '\0')))
 		result = ft_cd_home(mini->envp_list);

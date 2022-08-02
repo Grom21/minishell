@@ -6,7 +6,7 @@
 /*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:44 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/28 03:41:31 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/03 02:33:05 by etisha           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ static void	start_prog(t_shell *mini, t_lexer *copy, char **argv, char *file)
 			free (mini->input);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
+		ft_default_term(mini);   // test
 		if (execve(file, argv, mini->envp) == -1)
 		{
 			if (errno == EACCES)
@@ -105,6 +106,7 @@ static void	run_path(char **path, char **argv, t_shell *mini)
 				free (mini->input);
 			signal(SIGINT, SIG_DFL);
 			signal(SIGQUIT, SIG_DFL);
+			ft_default_term(mini);   // test
 			if (execve(path[i], argv, mini->envp) == -1)
 			{
 				if (errno == EACCES)

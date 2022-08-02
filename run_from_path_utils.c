@@ -26,6 +26,25 @@ static void	ft_check_exit_or_not(t_shell *mini, char *str)
 	}
 }
 
+static char	*ft_backslash_t(char *buffer, t_lexer *copy)
+{
+	int	i;
+
+	if (copy->next->chank[0] == '\0')
+		return (ft_strjoin(buffer, "\n"));
+	i = 0;
+	while (copy->next->chank[i])
+	{
+		if ((copy->next->chank[i] == ' ' || copy->next->chank[i] == '\t') \
+		&& copy->next->chank[i + 1] == ' ')
+			copy->next->chank[i + 1] = '\t';
+		i++;
+	}
+	if (copy->next->chank[i - 1] == ' ' && copy->next->chank[i] == '\0')
+		copy->next->chank[i - 1] = '\t';
+	return (ft_strjoin(buffer, copy->next->chank));
+}
+
 char	**ft_create_argv(t_shell *mini, t_lexer *copy)
 {
 	char		**matrix;
@@ -37,7 +56,7 @@ char	**ft_create_argv(t_shell *mini, t_lexer *copy)
 	{
 		buffer = ft_strjoin(copy->chank, " ");
 		ft_check_exit_or_not(mini, buffer);
-		buffer2 = ft_strjoin(buffer, copy->next->chank);
+		buffer2 = ft_backslash_t(buffer, copy);
 		ft_check_exit_or_not(mini, buffer2);
 		free (buffer);
 		matrix = ft_split(buffer2, ' ');
@@ -51,6 +70,7 @@ char	**ft_create_argv(t_shell *mini, t_lexer *copy)
 		if (matrix == NULL)
 			exit (1);
 	}
+	matrix = ft_return_space(matrix);
 	return (matrix);
 }
 
