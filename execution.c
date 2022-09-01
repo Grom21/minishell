@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: sbilli <sbilli@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:02:12 by etisha            #+#    #+#             */
-/*   Updated: 2022/08/03 02:32:49 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/04 16:26:27 by sbilli           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,21 @@ static t_lexer	*ft_wait(t_shell *mini, t_lexer *copy, int i)
 
 	ft_close_fd(mini, i);
 	g_last_exit = found_heredoc(copy);
-	signal(SIGINT, SIG_IGN);			//need know what we run? minishell?
+	if (ft_find_shell(copy) == 1)
+		signal(SIGINT, SIG_IGN);
 	waitpid(-1, &g_last_exit, 0);
-	tcsetattr(STDIN_FILENO, TCSADRAIN, &mini->new_settings); //test
-	write(1, "\n", 1); // test
-	signal(SIGINT, ft_signal);	 // test
+	tcsetattr(STDIN_FILENO, TCSADRAIN, &mini->new_settings);
+	if (ft_find_shell(copy) == 1)
+		signal(SIGINT, ft_signal);
 	if (g_last_exit == 2)
 		g_last_exit = 130;
 	else if (g_last_exit == 3)
 	{
-		write (2, "^\\Quit: 3\n", 10);
+		write (2, "Quit: 3\n", 8);
 		g_last_exit = 131;
 	}
 	else
-		g_last_exit = g_last_exit / 255;
+		g_last_exit = g_last_exit / 256;
 	if (stat("/tmp/heredoc_mini", &buf) == 0)
 		unlink("/tmp/heredoc_mini");
 	return (ft_next_command(copy));

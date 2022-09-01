@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: sbilli <sbilli@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:04:49 by etisha            #+#    #+#             */
-/*   Updated: 2022/08/02 04:51:05 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/04 15:47:02 by sbilli           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ void	ft_signal(int sig)
 	if (sig == SIGINT)
 	{
 		if (g_last_exit == -1)
-			write (2, "^C\n", 3);
+		{
+			write (2, "\n", 1);
+		}
 		else if (g_last_exit == -2)
 		{
 			write (2, "\n", 1);
@@ -36,4 +38,10 @@ void	ft_signal(int sig)
 			g_last_exit = 1;
 		}
 	}
+}
+
+void	ft_mini_signal(void)
+{
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 }

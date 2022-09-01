@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   children.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: sbilli <sbilli@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:01:19 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/27 01:01:20 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/04 15:35:46 by sbilli           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,8 @@ void	ft_children_run(t_shell *mini, t_lexer *lexer, int i, int count)
 	if (result != -1)
 		exit (result);
 	ft_run_from_path(mini, lexer);
-	if (lexer->chank[0] == '.' || lexer->chank[0] == '/' \
-	|| lexer->chank[0] == '~')
+	if ((lexer->chank[0] == '.' && lexer->chank[1] == '/') || \
+	lexer->chank[0] == '/' || lexer->chank[0] == '~')
 		ft_print_parser_error(&lexer, NO_SUCH_FILE_OR_DIR);
 	else
 		ft_print_parser_error(&lexer, COMMAND_NOT_FOUND);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: sbilli <sbilli@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 00:58:46 by etisha            #+#    #+#             */
-/*   Updated: 2022/07/28 15:04:39 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/04 17:06:33 by sbilli           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ int			pars_save(t_lexer *new_copy, t_lexer *old_copy, t_list *envp_list);
 
 /* EXECUTION */
 void		ft_execution(t_shell *mini);
+void		ft_cut_cut(t_lexer *lexer);
+int			ft_find_shell(t_lexer *lexer);
 void		ft_close_fd(t_shell *mini, int i);
 void		ft_error_fork(t_shell *mini, int i);
 int			ft_found_redirect_in_command(t_lexer *lexer);
@@ -139,6 +141,7 @@ void		ft_run_redirect(t_shell *mini, t_lexer *lexer, int *fd);
 int			ft_redirect_out_file2(t_lexer *lexer, t_lexer *now);
 int			ft_open_heredoc(t_lexer *lexer, int flag);
 void		ft_run_from_path(t_shell *mini, t_lexer *copy);
+void		ft_mini_signal(void);
 char		**ft_create_argv(t_shell *mini, t_lexer *copy);
 char		**ft_return_space(char **matrix);
 void		ft_error_exec(t_shell *mini, int exeption, char *str, char **argv);

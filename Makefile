@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+         #
+#    By: sbilli <sbilli@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/27 01:03:54 by etisha            #+#    #+#              #
-#    Updated: 2022/08/01 01:36:12 by etisha           ###   ########.fr        #
+#    Updated: 2022/08/04 17:07:57 by sbilli           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,7 +30,7 @@ SRC_FILES = cd.c	cd_utils.c	children.c	echo.c	env.c	envp_in_matrix.c \
 			run_from_path.c	run_from_path_utils.c	signal.c	term_settings.c \
 			unset.c
 
-RL =  -lreadline -L ~/.brew/opt/readline/lib -I ~/.brew/opt/readline/include
+RL =  -lreadline
 
 OBJ = $(patsubst %.c, %.o, $(SRC_FILES))
 

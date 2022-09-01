@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: etisha <etisha@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: sbilli <sbilli@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/27 01:02:17 by etisha            #+#    #+#             */
-/*   Updated: 2022/08/01 02:34:50 by etisha           ###   ########.fr       */
+/*   Updated: 2022/08/04 16:45:50 by sbilli           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ void	ft_exit_signal(t_shell *mini)
 static void	ft_exit_error(t_shell *mini, t_lexer *copy)
 {
 	int	i;
+	int	pipe;
 
-	write(2, "exit\nminishell: exit: ", 22);
+	pipe = ft_found_command_with_pipe(mini->lexer);
+	if (pipe == -1)
+		write (2, "exit\n", 5);
+	write(2, "minishell: exit: ", 17);
 	i = 0;
 	while (copy->chank[i] != '\0' && copy->chank[i] != ' ')
 		write(2, &copy->chank[i++], 1);
@@ -80,7 +84,9 @@ static int	ft_exam_exit(t_shell *mini, t_lexer *copy)
 	}
 	if (copy->chank[i] != '\0')
 	{
-		write(2, "exit\nminishell: exit: too many arguments\n", 41);
+		if (ft_found_command_with_pipe(mini->lexer) == -1)
+			write (2, "exit\n", 5);
+		write(2, "minishell: exit: too many arguments\n", 36);
 		return (1);
 	}
 	else
@@ -91,6 +97,7 @@ int	ft_exit(t_shell *mini, t_lexer *lexer)
 {
 	t_lexer	*copy;
 	int		result;
+	int		pipe;
 
 	copy = lexer->next;
 	if (copy && copy->chank[0] != '|' \
@@ -100,7 +107,8 @@ int	ft_exit(t_shell *mini, t_lexer *lexer)
 		if (result != 0)
 			return (result);
 	}
-	if (ft_found_command_with_pipe(mini->lexer) == -1)
+	pipe = ft_found_command_with_pipe(mini->lexer);
+	if (pipe == -1)
 		write (2, "exit\n", 5);
 	ft_free_memory_lexer_list(&mini->lexer);
 	ft_free_memory_envp_list(&mini->envp_list);
@@ -109,5 +117,7 @@ int	ft_exit(t_shell *mini, t_lexer *lexer)
 	if (mini->input)
 		free (mini->input);
 	ft_default_term(mini);
-	exit (g_last_exit);
+	if (pipe == -1)
+		exit (g_last_exit);
+	exit (EXIT_SUCCESS);
 }
